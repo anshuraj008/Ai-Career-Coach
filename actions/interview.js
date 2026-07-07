@@ -11,15 +11,30 @@ export async function generateQuiz(config = {}) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  // Check Clerk subscription plan
+  const clerk = await import("@clerk/nextjs/server");
+  const clerkUser = await clerk.currentUser();
+  const isPremium = clerkUser?.publicMetadata?.plan === "premium";
+
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
     select: {
+      id: true,
       industry: true,
       skills: true,
     },
   });
 
   if (!user) throw new Error("User not found");
+
+  if (!isPremium) {
+    const quizCount = await db.assessment.count({
+      where: { userId: user.id },
+    });
+    if (quizCount >= 2) {
+      throw new Error("Free tier limit reached: You can generate up to 2 mock interviews on the Free plan. Please upgrade to Premium for unlimited mock interviews.");
+    }
+  }
 
   const role = config.role || user.industry || "Software Engineer";
   const experienceLevel = config.experienceLevel || "Mid-Level";

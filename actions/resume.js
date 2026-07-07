@@ -61,6 +61,15 @@ export async function improveWithAI({ current, type }) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  // Check Clerk subscription plan
+  const clerk = await import("@clerk/nextjs/server");
+  const clerkUser = await clerk.currentUser();
+  const isPremium = clerkUser?.publicMetadata?.plan === "premium";
+
+  if (!isPremium) {
+    throw new Error("AI Optimization is a Premium feature. Please upgrade to Premium to optimize your content with AI.");
+  }
+
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
     include: {

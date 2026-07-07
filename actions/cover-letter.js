@@ -12,11 +12,25 @@ export async function generateCoverLetter(data) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
+  // Check Clerk subscription plan
+  const clerk = await import("@clerk/nextjs/server");
+  const clerkUser = await clerk.currentUser();
+  const isPremium = clerkUser?.publicMetadata?.plan === "premium";
+
   const user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
 
   if (!user) throw new Error("User not found");
+
+  if (!isPremium) {
+    const letterCount = await db.coverLetter.count({
+      where: { userId: user.id },
+    });
+    if (letterCount >= 2) {
+      throw new Error("Free tier limit reached: You can generate up to 2 cover letters on the Free plan. Please upgrade to Premium for unlimited cover letters.");
+    }
+  }
 
   // Fetch the candidate's active Resume
   const resume = await db.resume.findUnique({

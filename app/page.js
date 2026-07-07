@@ -181,6 +181,112 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Pricing Section */}
+      <section className="w-full py-20 md:py-28 bg-zinc-950/20 border-y border-white/5 relative">
+        <div className="container mx-auto px-4 md:px-6">
+          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+            <div className="inline-flex items-center space-x-2 bg-primary/5 border border-primary/10 rounded-full px-3 py-1 text-xs text-primary mb-2">
+              <Sparkles className="h-3 w-3" />
+              <span>Sleek Pricing Plans</span>
+            </div>
+            <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl">
+              Affordable, Premium Career Accelerator
+            </h2>
+            <p className="text-muted-foreground md:text-lg">
+              Get access to AI resume optimization, mock interviews, and cover letters.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Free Plan */}
+            <Card className="relative border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between p-8 group hover:border-white/10 transition-all duration-300">
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold tracking-tight text-foreground">Free Tier</h3>
+                  <p className="text-sm text-muted-foreground mt-1">Explore our basic AI career building features.</p>
+                </div>
+                <div className="text-3xl font-extrabold tracking-tight">$0 <span className="text-sm text-muted-foreground font-normal">/ month</span></div>
+                
+                <ul className="space-y-3.5 border-t border-white/5 pt-6">
+                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>1 Resume Document</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>2 AI Cover Letters</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>2 Mock Technical Interviews</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>Basic Industry Analytics</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="pt-8">
+                <Link href="/dashboard" className="w-full block">
+                  <Button variant="outline" className="w-full rounded-xl font-bold border-white/5 bg-zinc-900/50 hover:bg-zinc-900">
+                    Get Started Free
+                  </Button>
+                </Link>
+              </div>
+            </Card>
+
+            {/* Premium Plan */}
+            <Card className="relative border border-primary/20 bg-zinc-950/60 backdrop-blur-sm rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between p-8 group hover:border-primary/40 transition-all duration-300">
+              <div className="absolute top-4 right-4">
+                <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full">
+                  Most Popular
+                </span>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-1.5">
+                    Premium Plan
+                    <Sparkles className="h-4 w-4 text-primary animate-pulse" />
+                  </h3>
+                  <p className="text-sm text-muted-foreground mt-1">Unlock complete AI coaching and unlimited tools.</p>
+                </div>
+                <div className="text-3xl font-extrabold tracking-tight text-primary">$19 <span className="text-sm text-muted-foreground font-normal">/ month</span></div>
+
+                <ul className="space-y-3.5 border-t border-white/5 pt-6">
+                  <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>1 Resume Document (with AI Improve)</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>Unlimited AI Cover Letters</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>Unlimited Mock Interviews</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>Full Industry Analytics & Salary Data</span>
+                  </li>
+                  <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
+                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span>Premium AI Feedback & Coaching</span>
+                  </li>
+                </ul>
+              </div>
+              <div className="pt-8">
+                <Link href="/dashboard" className="w-full block">
+                  <Button className="w-full rounded-xl font-bold shadow-lg shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.02] transition-all">
+                    Upgrade Now
+                  </Button>
+                </Link>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </section>
+
       {/* FAQ Section */}
       <section className="w-full py-20 md:py-28 bg-background relative">
         <div className="container mx-auto px-4 md:px-6">
