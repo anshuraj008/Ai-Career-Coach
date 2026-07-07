@@ -103,46 +103,56 @@ export function EntryForm({ type, entries, onChange }) {
 
   return (
     <div className="space-y-4">
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 gap-4">
         {entries.map((item, index) => (
-          <Card key={index}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {item.title} @ {item.organization}
-              </CardTitle>
-              <Button
-                variant="outline"
-                size="icon"
-                type="button"
-                onClick={() => handleDelete(index)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground">
+          <div
+            key={index}
+            className="relative p-6 border border-white/5 rounded-2xl bg-slate-950/30 hover:border-primary/20 hover:bg-slate-950/50 transition-all duration-300 group flex items-start justify-between gap-4 shadow-sm"
+          >
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
+                <h4 className="text-base font-bold tracking-tight text-foreground">
+                  {item.title} <span className="text-muted-foreground font-normal">at</span> {item.organization}
+                </h4>
+              </div>
+              <p className="text-[11px] font-bold text-primary uppercase tracking-wider">
                 {item.current
                   ? `${item.startDate} - Present`
                   : `${item.startDate} - ${item.endDate}`}
               </p>
-              <p className="mt-2 text-sm whitespace-pre-wrap">
+              <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap pt-1">
                 {item.description}
               </p>
-            </CardContent>
-          </Card>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              type="button"
+              className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-lg transition-colors flex-shrink-0"
+              onClick={() => handleDelete(index)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
         ))}
       </div>
 
       {isAdding && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Add {type}</CardTitle>
+        <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+          <CardHeader className="border-b border-white/5 pb-4">
+            <CardTitle className="text-lg font-bold flex items-center gap-2 text-foreground">
+              <PlusCircle className="h-5 w-5 text-primary animate-pulse" />
+              Add {type} Details
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <CardContent className="space-y-6 pt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Title / Position</label>
                 <Input
-                  placeholder="Title/Position"
+                  placeholder="e.g. Software Engineer"
+                  className="rounded-xl border-white/5 bg-slate-950/50"
                   {...register("title")}
                   error={errors.title}
                 />
@@ -151,8 +161,10 @@ export function EntryForm({ type, entries, onChange }) {
                 )}
               </div>
               <div className="space-y-2">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Organization / Company</label>
                 <Input
-                  placeholder="Organization/Company"
+                  placeholder="e.g. Google"
+                  className="rounded-xl border-white/5 bg-slate-950/50"
                   {...register("organization")}
                   error={errors.organization}
                 />
@@ -164,10 +176,12 @@ export function EntryForm({ type, entries, onChange }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Start Date</label>
                 <Input
                   type="month"
+                  className="rounded-xl border-white/5 bg-slate-950/50"
                   {...register("startDate")}
                   error={errors.startDate}
                 />
@@ -178,8 +192,10 @@ export function EntryForm({ type, entries, onChange }) {
                 )}
               </div>
               <div className="space-y-2">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">End Date</label>
                 <Input
                   type="month"
+                  className="rounded-xl border-white/5 bg-slate-950/50"
                   {...register("endDate")}
                   disabled={current}
                   error={errors.endDate}
@@ -192,10 +208,11 @@ export function EntryForm({ type, entries, onChange }) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 bg-slate-900/30 border border-white/5 rounded-xl p-3 max-w-fit">
               <input
                 type="checkbox"
                 id="current"
+                className="h-4 w-4 rounded border-white/10 text-primary focus:ring-primary"
                 {...register("current")}
                 onChange={(e) => {
                   setValue("current", e.target.checked);
@@ -204,13 +221,16 @@ export function EntryForm({ type, entries, onChange }) {
                   }
                 }}
               />
-              <label htmlFor="current">Current {type}</label>
+              <label htmlFor="current" className="text-xs font-semibold text-foreground cursor-pointer select-none">
+                Currently working/studying here
+              </label>
             </div>
 
             <div className="space-y-2">
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Description</label>
               <Textarea
-                placeholder={`Description of your ${type.toLowerCase()}`}
-                className="h-32"
+                placeholder={`Describe your key achievements, responsibilities, and technologies used...`}
+                className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
                 {...register("description")}
                 error={errors.description}
               />
@@ -220,30 +240,33 @@ export function EntryForm({ type, entries, onChange }) {
                 </p>
               )}
             </div>
+
             <Button
               type="button"
-              variant="ghost"
+              variant="outline"
               size="sm"
+              className="border-primary/20 hover:border-primary/40 hover:bg-primary/5 text-xs py-1.5 px-3 rounded-lg flex items-center gap-1.5 transition-all group"
               onClick={handleImproveDescription}
               disabled={isImproving || !watch("description")}
             >
               {isImproving ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Improving...
+                  <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" />
+                  Improving description...
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-4 w-4 mr-2" />
+                  <Sparkles className="h-3.5 w-3.5 mr-1.5 text-primary group-hover:scale-110 transition-transform" />
                   Improve with AI
                 </>
               )}
             </Button>
           </CardContent>
-          <CardFooter className="flex justify-end space-x-2">
+          <CardFooter className="flex justify-end gap-2 border-t border-white/5 bg-slate-950/20 px-6 py-4">
             <Button
               type="button"
               variant="outline"
+              className="rounded-xl border-white/5"
               onClick={() => {
                 reset();
                 setIsAdding(false);
@@ -251,7 +274,7 @@ export function EntryForm({ type, entries, onChange }) {
             >
               Cancel
             </Button>
-            <Button type="button" onClick={handleAdd}>
+            <Button type="button" className="rounded-xl" onClick={handleAdd}>
               <PlusCircle className="h-4 w-4 mr-2" />
               Add Entry
             </Button>
@@ -261,12 +284,12 @@ export function EntryForm({ type, entries, onChange }) {
 
       {!isAdding && (
         <Button
-          className="w-full"
+          className="w-full h-11 border-dashed border-white/10 hover:border-primary/30 hover:bg-primary/5 hover:text-primary transition-all duration-300 rounded-xl"
           variant="outline"
           onClick={() => setIsAdding(true)}
         >
-          <PlusCircle className="h-4 w-4 mr-2" />
-          Add {type}
+          <PlusCircle className="h-4 w-4 mr-2 animate-bounce" />
+          Add New {type}
         </Button>
       )}
     </div>

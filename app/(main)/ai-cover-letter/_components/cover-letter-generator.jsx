@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { Loader2 } from "lucide-react";
+import { Loader2, Sparkles, Building, Briefcase, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -58,25 +58,42 @@ export default function CoverLetterGenerator() {
   };
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Job Details</CardTitle>
-          <CardDescription>
-            Provide information about the position you're applying for
+    <div className="space-y-6 max-w-3xl mx-auto py-4">
+      {/* Decorative gradient glow top background */}
+      <div className="absolute top-0 right-[25%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <div className="space-y-1 pb-4 border-b border-white/5">
+        <h1 className="font-extrabold tracking-tight gradient-title text-4xl md:text-5xl">
+          AI Cover Letter Generator
+        </h1>
+        <p className="text-sm text-muted-foreground">
+          Generate an engaging, role-specific cover letter using your profile information.
+        </p>
+      </div>
+
+      <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+        <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/20">
+          <CardTitle className="text-lg font-bold flex items-center gap-2 text-foreground">
+            <Building className="h-5 w-5 text-primary" />
+            Job Details
+          </CardTitle>
+          <CardDescription className="text-xs text-muted-foreground">
+            Provide details about the company and job description you're applying for.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {/* Form fields remain the same */}
-            <div className="grid grid-cols-2 gap-4">
+        <CardContent className="pt-6 px-6 md:px-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name</Label>
-                <Input
-                  id="companyName"
-                  placeholder="Enter company name"
-                  {...register("companyName")}
-                />
+                <Label htmlFor="companyName" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Company Name</Label>
+                <div className="relative">
+                  <Input
+                    id="companyName"
+                    placeholder="e.g. Google"
+                    className="rounded-xl border-white/5 bg-slate-950/50"
+                    {...register("companyName")}
+                  />
+                </div>
                 {errors.companyName && (
                   <p className="text-sm text-red-500">
                     {errors.companyName.message}
@@ -85,12 +102,15 @@ export default function CoverLetterGenerator() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="jobTitle">Job Title</Label>
-                <Input
-                  id="jobTitle"
-                  placeholder="Enter job title"
-                  {...register("jobTitle")}
-                />
+                <Label htmlFor="jobTitle" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Job Title</Label>
+                <div className="relative">
+                  <Input
+                    id="jobTitle"
+                    placeholder="e.g. Frontend Engineer"
+                    className="rounded-xl border-white/5 bg-slate-950/50"
+                    {...register("jobTitle")}
+                  />
+                </div>
                 {errors.jobTitle && (
                   <p className="text-sm text-red-500">
                     {errors.jobTitle.message}
@@ -100,11 +120,11 @@ export default function CoverLetterGenerator() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="jobDescription">Job Description</Label>
+              <Label htmlFor="jobDescription" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Job Description</Label>
               <Textarea
                 id="jobDescription"
-                placeholder="Paste the job description here"
-                className="h-32"
+                placeholder="Paste the full job description or key requirements here to tailor the letter..."
+                className="h-44 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
                 {...register("jobDescription")}
               />
               {errors.jobDescription && (
@@ -114,15 +134,22 @@ export default function CoverLetterGenerator() {
               )}
             </div>
 
-            <div className="flex justify-end">
-              <Button type="submit" disabled={generating}>
+            <div className="flex justify-end pt-2">
+              <Button 
+                type="submit" 
+                disabled={generating}
+                className="rounded-xl px-8 shadow-md font-bold tracking-wide transition-all duration-300 group hover:scale-105 active:scale-95"
+              >
                 {generating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     Generating...
                   </>
                 ) : (
-                  "Generate Cover Letter"
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4 text-primary-foreground group-hover:scale-110 transition-transform" />
+                    Generate Cover Letter
+                  </>
                 )}
               </Button>
             </div>
