@@ -18,10 +18,11 @@ import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
 import { Sparkles, BrainCircuit, CheckCircle, HelpCircle } from "lucide-react";
 
-export default function Quiz() {
+export default function Quiz({ config = {} }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   const {
     loading: generatingQuiz,
@@ -41,6 +42,13 @@ export default function Quiz() {
       setAnswers(new Array(quizData.length).fill(null));
     }
   }, [quizData]);
+
+  useEffect(() => {
+    if (config && Object.keys(config).length > 0 && !hasStarted) {
+      setHasStarted(true);
+      generateQuizFn(config);
+    }
+  }, [config, hasStarted]);
 
   const handleAnswer = (answer) => {
     const newAnswers = [...answers];
@@ -81,7 +89,7 @@ export default function Quiz() {
     setCurrentQuestion(0);
     setAnswers([]);
     setShowExplanation(false);
-    generateQuizFn();
+    generateQuizFn(config);
     setResultData(null);
   };
 
@@ -120,7 +128,7 @@ export default function Quiz() {
           </p>
         </CardContent>
         <CardFooter className="bg-slate-950/20 px-6 py-4 flex justify-center border-t border-white/5">
-          <Button onClick={generateQuizFn} className="w-full max-w-sm rounded-xl py-6 font-bold shadow-md hover:scale-105 transition-all">
+          <Button onClick={() => generateQuizFn(config)} className="w-full max-w-sm rounded-xl py-6 font-bold shadow-md hover:scale-105 transition-all">
             Start AI Mock Quiz
           </Button>
         </CardFooter>

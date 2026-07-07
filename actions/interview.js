@@ -7,7 +7,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-export async function generateQuiz() {
+export async function generateQuiz(config = {}) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -21,12 +21,16 @@ export async function generateQuiz() {
 
   if (!user) throw new Error("User not found");
 
+  const role = config.role || user.industry || "Software Engineer";
+  const experienceLevel = config.experienceLevel || "Mid-Level";
+  const difficulty = config.difficulty || "Medium";
+  const companyType = config.companyType || "General Tech Company";
+
   const prompt = `
-    Generate 10 technical interview questions for a ${
-      user.industry
-    } professional${
-    user.skills?.length ? ` with expertise in ${user.skills.join(", ")}` : ""
-  }.
+    Generate 10 technical and behavioral interview questions for a ${role} position at a ${companyType} company.
+    Difficulty Level: ${difficulty}
+    Experience Level: ${experienceLevel}
+    Relevant Skills: ${user.skills?.length ? user.skills.join(", ") : "General Engineering"}
     
     Each question should be multiple choice with 4 options.
     
