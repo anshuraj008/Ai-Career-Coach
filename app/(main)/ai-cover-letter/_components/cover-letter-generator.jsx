@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 
 export default function CoverLetterGenerator() {
   const router = useRouter();
+  const [template, setTemplate] = useState("Formal");
 
   const {
     register,
@@ -51,11 +52,13 @@ export default function CoverLetterGenerator() {
 
   const onSubmit = async (data) => {
     try {
-      await generateLetterFn(data);
+      await generateLetterFn({ ...data, template });
     } catch (error) {
       toast.error(error.message || "Failed to generate cover letter");
     }
   };
+
+  const templates = ["Formal", "Modern", "Creative", "Tech-focused"];
 
   return (
     <div className="space-y-6 max-w-3xl mx-auto py-4">
@@ -132,6 +135,32 @@ export default function CoverLetterGenerator() {
                   {errors.jobDescription.message}
                 </p>
               )}
+            </div>
+
+            {/* Template Selector */}
+            <div className="space-y-2">
+              <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block">
+                Cover Letter Template Style
+              </Label>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                {templates.map((t) => {
+                  const isSelected = template === t;
+                  return (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => setTemplate(t)}
+                      className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/5 text-primary shadow-sm scale-[1.03]"
+                          : "border-white/5 bg-slate-950/20 text-muted-foreground hover:bg-slate-900/30 hover:border-white/10"
+                      }`}
+                    >
+                      {t}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="flex justify-end pt-2">

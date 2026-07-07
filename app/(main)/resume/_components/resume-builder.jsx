@@ -687,58 +687,83 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
           </div>
         </TabsContent>
 
-        <TabsContent value="preview" className="space-y-4">
-          {activeTab === "preview" && (
-            <Button
-              variant="link"
-              type="button"
-              className="text-primary hover:text-primary/80 font-semibold p-0 flex items-center gap-1.5"
-              onClick={() =>
-                setResumeMode(resumeMode === "preview" ? "edit" : "preview")
-              }
-            >
-              {resumeMode === "preview" ? (
-                <>
-                  <Edit className="h-4 w-4" />
-                  Edit Resume Markdown
-                </>
-              ) : (
-                <>
-                  <Monitor className="h-4 w-4" />
-                  Show Visual Preview
-                </>
-              )}
-            </Button>
-          )}
+        <TabsContent value="preview" className="space-y-4 animate-fade-in">
+          <div className="flex items-center justify-between gap-4 p-4 border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl shadow-sm">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setResumeMode(resumeMode === "preview" ? "edit" : "preview")}
+                className="rounded-xl text-xs font-bold border-white/5"
+              >
+                {resumeMode === "preview" ? (
+                  <>
+                    <Edit className="h-3.5 w-3.5 mr-1.5" />
+                    Edit Markdown
+                  </>
+                ) : (
+                  <>
+                    <Monitor className="h-3.5 w-3.5 mr-1.5" />
+                    Visual Preview
+                  </>
+                )}
+              </Button>
+            </div>
 
-          {activeTab === "preview" && resumeMode !== "preview" && (
-            <div className="flex p-4 gap-3 items-center border border-yellow-500/20 bg-yellow-500/5 text-yellow-500 rounded-2xl mb-4 max-w-fit">
-              <AlertTriangle className="h-5 w-5 flex-shrink-0 animate-bounce" />
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={generatePDF}
+                disabled={isGenerating}
+                className="rounded-xl text-xs font-bold border-white/5"
+              >
+                {isGenerating ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
+                ) : (
+                  <>
+                    <Download className="h-3.5 w-3.5 mr-1.5" />
+                    Export PDF
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {resumeMode !== "preview" && (
+            <div className="flex p-4 gap-3 items-center border border-yellow-500/20 bg-yellow-500/5 text-yellow-500 rounded-2xl mb-4 max-w-fit animate-pulse">
+              <AlertTriangle className="h-5 w-5 flex-shrink-0" />
               <span className="text-xs font-semibold leading-relaxed">
                 Caution: You will lose any manual markdown edits if you modify and save the Form Fields again.
               </span>
             </div>
           )}
-          <div className="border border-white/5 rounded-2xl overflow-hidden shadow-2xl bg-white">
-            <MDEditor
-              value={previewContent}
-              onChange={setPreviewContent}
-              height={800}
-              preview={resumeMode}
-            />
-          </div>
-          <div className="hidden">
-            <div id="resume-pdf">
-              <MDEditor.Markdown
-                source={previewContent}
-                style={{
-                  background: "white",
-                  color: "black",
-                  padding: "20px",
-                }}
+
+          {resumeMode === "preview" ? (
+            /* Premium Paper Canvas Mockup */
+            <div className="p-4 md:p-8 bg-slate-950/20 border border-white/5 rounded-3xl flex justify-center shadow-inner overflow-x-auto">
+              <div 
+                id="resume-pdf"
+                className="w-full max-w-[800px] min-h-[1050px] bg-white text-black p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate max-w-none select-text"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                <MDEditor.Markdown 
+                  source={previewContent} 
+                  style={{ background: "white", color: "black" }} 
+                />
+              </div>
+            </div>
+          ) : (
+            /* Live Markdown Editor Box */
+            <div className="border border-white/5 rounded-2xl overflow-hidden shadow-2xl bg-white">
+              <MDEditor
+                value={previewContent}
+                onChange={setPreviewContent}
+                height={800}
+                preview={resumeMode}
               />
             </div>
-          </div>
+          )}
         </TabsContent>
       </Tabs>
     </div>
