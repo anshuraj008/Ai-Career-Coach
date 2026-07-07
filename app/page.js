@@ -276,7 +276,7 @@ export default function LandingPage() {
                 </ul>
               </div>
               <div className="pt-8">
-                <Link href="/dashboard" className="w-full block">
+                <Link href="/checkout" className="w-full block">
                   <Button className="w-full rounded-xl font-bold shadow-lg shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.02] transition-all">
                     Upgrade Now
                   </Button>

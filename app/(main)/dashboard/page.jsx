@@ -26,11 +26,15 @@ export default async function DashboardPage() {
     },
   });
 
+  const clerk = await import("@clerk/nextjs/server");
+  const clerkUser = await clerk.currentUser();
+  const isPremium = clerkUser?.publicMetadata?.plan === "premium";
+
   const insights = await getIndustryInsights();
 
   return (
     <div className="container mx-auto">
-      <DashboardView insights={insights} initialProfile={user} />
+      <DashboardView insights={insights} initialProfile={user} isPremium={isPremium} />
     </div>
   );
 }
