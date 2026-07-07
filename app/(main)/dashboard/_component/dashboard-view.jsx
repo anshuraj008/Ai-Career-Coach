@@ -1,6 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   BarChart,
   Bar,
@@ -20,6 +23,8 @@ import {
   Sparkles,
   DollarSign,
   Compass,
+  Edit2,
+  Loader2,
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import {
@@ -31,8 +36,130 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { industries } from "@/data/industries";
+import { onboardingSchema } from "@/app/lib/schema";
+import { updateUser } from "@/actions/user";
+import useFetch from "@/hooks/use-fetch";
+import { toast } from "sonner";
 
-const DashboardView = ({ insights }) => {
+const DashboardView = ({ insights, initialProfile }) => {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+
+  // Parse initial user values back to form defaults
+  const parsedProfile = useMemo(() => {
+    if (!initialProfile?.industry) return null;
+    const parts = initialProfile.industry.split("-");
+    const industryId = parts[0];
+    const subIndustryFormatted = parts.slice(1).join("-");
+
+    const matchedIndustry = industries.find((ind) => ind.id === industryId);
+    const matchedSubIndustry = matchedIndustry?.subIndustries.find(
+      (sub) => sub.toLowerCase().replace(/ /g, "-") === subIndustryFormatted
+    );
+
+    return {
+      industry: industryId,
+      subIndustry: matchedSubIndustry || "",
+      experience: initialProfile.experience?.toString() || "0",
+      skills: initialProfile.skills?.join(", ") || "",
+      bio: initialProfile.bio || "",
+    };
+  }, [initialProfile]);
+
+  const [selectedIndustry, setSelectedIndustry] = useState(() => {
+    if (!parsedProfile) return null;
+    return industries.find((ind) => ind.id === parsedProfile.industry) || null;
+  });
+
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(onboardingSchema),
+    defaultValues: parsedProfile || {
+      industry: "",
+      subIndustry: "",
+      experience: "0",
+      skills: "",
+      bio: "",
+    },
+  });
+
+  // Watch industry field to filter specializations
+  const watchIndustry = watch("industry");
+
+  // Reset form when profile updates
+  useEffect(() => {
+    if (parsedProfile) {
+      reset(parsedProfile);
+      setSelectedIndustry(
+        industries.find((ind) => ind.id === parsedProfile.industry) || null
+      );
+    }
+  }, [parsedProfile, reset]);
+
+  const {
+    loading: isUpdating,
+    fn: updateUserFn,
+    data: updateResult,
+    error: updateError,
+  } = useFetch(updateUser);
+
+  // Process profile updates
+  const onProfileSubmit = async (values) => {
+    try {
+      const formattedIndustry = `${values.industry}-${values.subIndustry
+        .toLowerCase()
+        .replace(/ /g, "-")}`;
+
+      await updateUserFn({
+        ...values,
+        industry: formattedIndustry,
+      });
+    } catch (error) {
+      console.error("Profile update error:", error);
+    }
+  };
+
+  // Handle server update result
+  useEffect(() => {
+    if (updateResult && !isUpdating) {
+      toast.success("Profile and Market Insights updated!");
+      setOpen(false);
+      router.refresh();
+    }
+    if (updateError) {
+      toast.error(updateError.message || "Failed to update profile");
+    }
+  }, [updateResult, updateError, isUpdating]);
+
   // Transform salary data for the chart
   const salaryData = insights.salaryRanges.map((range) => ({
     name: range.role,
@@ -78,19 +205,175 @@ const DashboardView = ({ insights }) => {
   );
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto py-4">
+    <div className="space-y-6 max-w-5xl mx-auto py-4 relative">
       {/* Decorative gradient glow top background */}
       <div className="absolute top-0 right-[20%] w-[350px] h-[350px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-white/5 pb-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/5 pb-4">
         <div className="space-y-0.5">
           <h2 className="text-xl font-bold tracking-tight text-foreground">Market Insights</h2>
           <p className="text-xs text-muted-foreground">Real-time industry overview and salary analytics.</p>
         </div>
-        <Badge variant="outline" className="rounded-xl border-white/5 text-[10px] font-bold px-3 py-1 flex items-center gap-1">
-          <Calendar className="h-3 w-3 text-primary/60" />
-          Last updated: {lastUpdatedDate}
-        </Badge>
+        
+        <div className="flex flex-row items-center gap-3">
+          <Badge variant="outline" className="rounded-xl border-white/5 text-[10px] font-bold px-3 py-1 flex items-center gap-1">
+            <Calendar className="h-3 w-3 text-primary/60" />
+            Last updated: {lastUpdatedDate}
+          </Badge>
+
+          {/* Edit Profile Dialog */}
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm" className="rounded-xl font-semibold shadow-md gap-1.5 hover:scale-105 active:scale-95 transition-all text-xs">
+                <Edit2 className="h-3.5 w-3.5" />
+                Edit Profile
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="rounded-2xl border border-white/10 bg-slate-950 max-h-[90vh] overflow-y-auto w-full max-w-md">
+              <DialogHeader>
+                <DialogTitle className="gradient-title text-2xl font-bold">Edit Profile Details</DialogTitle>
+                <DialogDescription className="text-xs text-muted-foreground">
+                  Update your target industry, experience, and profile details to customize your coaching experience.
+                </DialogDescription>
+              </DialogHeader>
+              
+              <form onSubmit={handleSubmit(onProfileSubmit)} className="space-y-4 pt-2">
+                
+                {/* Industry Selection */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="edit-industry" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Industry</Label>
+                  <Controller
+                    name="industry"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => {
+                          field.onChange(val);
+                          setSelectedIndustry(industries.find((ind) => ind.id === val) || null);
+                          setValue("subIndustry", "");
+                        }}
+                      >
+                        <SelectTrigger id="edit-industry" className="rounded-xl border-white/5 bg-slate-900/50">
+                          <SelectValue placeholder="Select an industry" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-slate-950 border-white/10">
+                          <SelectGroup>
+                            <SelectLabel>Industries</SelectLabel>
+                            {industries.map((ind) => (
+                              <SelectItem key={ind.id} value={ind.id}>
+                                {ind.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+                  {errors.industry && (
+                    <p className="text-xs text-red-500">{errors.industry.message}</p>
+                  )}
+                </div>
+
+                {/* Specialization Selection */}
+                {watchIndustry && (
+                  <div className="space-y-1.5">
+                    <Label htmlFor="edit-specialization" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Specialization</Label>
+                    <Controller
+                      name="subIndustry"
+                      control={control}
+                      render={({ field }) => (
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id="edit-specialization" className="rounded-xl border-white/5 bg-slate-900/50">
+                            <SelectValue placeholder="Select your specialization" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-slate-950 border-white/10">
+                            <SelectGroup>
+                              <SelectLabel>Specializations</SelectLabel>
+                              {selectedIndustry?.subIndustries.map((sub) => (
+                                <SelectItem key={sub} value={sub}>
+                                  {sub}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {errors.subIndustry && (
+                      <p className="text-xs text-red-500">{errors.subIndustry.message}</p>
+                    )}
+                  </div>
+                )}
+
+                {/* Years of Experience */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="edit-experience" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Years of Experience</Label>
+                  <Input
+                    id="edit-experience"
+                    type="number"
+                    min="0"
+                    max="50"
+                    className="rounded-xl border-white/5 bg-slate-900/50"
+                    placeholder="e.g. 5"
+                    {...register("experience")}
+                  />
+                  {errors.experience && (
+                    <p className="text-xs text-red-500">{errors.experience.message}</p>
+                  )}
+                </div>
+
+                {/* Skills */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="edit-skills" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Skills</Label>
+                  <Input
+                    id="edit-skills"
+                    className="rounded-xl border-white/5 bg-slate-900/50"
+                    placeholder="e.g., Python, JavaScript, Project Management"
+                    {...register("skills")}
+                  />
+                  <span className="text-[10px] text-muted-foreground leading-relaxed block">
+                    Separate multiple skills with commas
+                  </span>
+                  {errors.skills && (
+                    <p className="text-xs text-red-500">{errors.skills.message}</p>
+                  )}
+                </div>
+
+                {/* Professional Bio */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="edit-bio" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Professional Bio</Label>
+                  <Textarea
+                    id="edit-bio"
+                    className="h-24 rounded-xl border-white/5 bg-slate-900/50 leading-relaxed"
+                    placeholder="Tell us about your professional background..."
+                    {...register("bio")}
+                  />
+                  {errors.bio && (
+                    <p className="text-xs text-red-500">{errors.bio.message}</p>
+                  )}
+                </div>
+
+                {/* Footer Controls */}
+                <div className="flex justify-end gap-2 pt-2">
+                  <Button type="button" variant="outline" onClick={() => setOpen(false)} className="rounded-xl text-xs font-bold border-white/5">
+                    Cancel
+                  </Button>
+                  <Button type="submit" disabled={isUpdating} className="rounded-xl text-xs font-bold">
+                    {isUpdating ? (
+                      <>
+                        <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      "Save Profile"
+                    )}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
 
       {/* Market Overview Cards */}
