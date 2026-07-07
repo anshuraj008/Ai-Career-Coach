@@ -41,12 +41,12 @@ export default async function Header() {
             <Link href="/dashboard">
               <Button
                 variant="outline"
-                className="hidden md:inline-flex items-center gap-2"
+                className="hidden md:inline-flex items-center gap-2 rounded-xl border border-white/10 bg-zinc-900/50 hover:bg-zinc-900 text-foreground font-semibold shadow-[0_0_12px_rgba(255,255,255,0.02)] hover:shadow-[0_0_18px_rgba(255,255,255,0.06)] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
               >
-                <LayoutDashboard className="h-4 w-4" />
+                <LayoutDashboard className="h-4 w-4 text-primary" />
                 Industry Insights
               </Button>
-              <Button variant="ghost" className="md:hidden w-10 h-10 p-0">
+              <Button variant="ghost" className="md:hidden w-10 h-10 p-0 rounded-xl hover:bg-zinc-900/50">
                 <LayoutDashboard className="h-4 w-4" />
               </Button>
             </Link>
@@ -54,8 +54,8 @@ export default async function Header() {
             {/* Growth Tools Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button className="flex items-center gap-2">
-                  <StarsIcon className="h-4 w-4" />
+                <Button className="flex items-center gap-2 rounded-xl font-bold bg-primary hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.08)] hover:shadow-[0_0_25px_rgba(255,255,255,0.18)]">
+                  <StarsIcon className="h-4 w-4 text-primary-foreground animate-pulse" />
                   <span className="hidden md:block">Growth Tools</span>
                   <ChevronDown className="h-4 w-4" />
                 </Button>
