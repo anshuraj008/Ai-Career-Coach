@@ -229,7 +229,7 @@ const DashboardView = ({ insights, initialProfile }) => {
                 Edit Profile
               </Button>
             </DialogTrigger>
-            <DialogContent className="rounded-2xl border border-white/10 bg-slate-950 max-h-[90vh] overflow-y-auto w-full max-w-md">
+            <DialogContent className="rounded-2xl border border-white/10 bg-zinc-950 max-h-[90vh] overflow-y-auto w-full max-w-md">
               <DialogHeader>
                 <DialogTitle className="gradient-title text-2xl font-bold">Edit Profile Details</DialogTitle>
                 <DialogDescription className="text-xs text-muted-foreground">
@@ -254,10 +254,10 @@ const DashboardView = ({ insights, initialProfile }) => {
                           setValue("subIndustry", "");
                         }}
                       >
-                        <SelectTrigger id="edit-industry" className="rounded-xl border-white/5 bg-slate-900/50">
+                        <SelectTrigger id="edit-industry" className="rounded-xl border-white/5 bg-zinc-900/50">
                           <SelectValue placeholder="Select an industry" />
                         </SelectTrigger>
-                        <SelectContent className="bg-slate-950 border-white/10">
+                        <SelectContent className="bg-zinc-950 border-white/10">
                           <SelectGroup>
                             <SelectLabel>Industries</SelectLabel>
                             {industries.map((ind) => (
@@ -284,10 +284,10 @@ const DashboardView = ({ insights, initialProfile }) => {
                       control={control}
                       render={({ field }) => (
                         <Select value={field.value} onValueChange={field.onChange}>
-                          <SelectTrigger id="edit-specialization" className="rounded-xl border-white/5 bg-slate-900/50">
+                          <SelectTrigger id="edit-specialization" className="rounded-xl border-white/5 bg-zinc-900/50">
                             <SelectValue placeholder="Select your specialization" />
                           </SelectTrigger>
-                          <SelectContent className="bg-slate-950 border-white/10">
+                          <SelectContent className="bg-zinc-950 border-white/10">
                             <SelectGroup>
                               <SelectLabel>Specializations</SelectLabel>
                               {selectedIndustry?.subIndustries.map((sub) => (
@@ -314,7 +314,7 @@ const DashboardView = ({ insights, initialProfile }) => {
                     type="number"
                     min="0"
                     max="50"
-                    className="rounded-xl border-white/5 bg-slate-900/50"
+                    className="rounded-xl border-white/5 bg-zinc-900/50"
                     placeholder="e.g. 5"
                     {...register("experience")}
                   />
@@ -328,7 +328,7 @@ const DashboardView = ({ insights, initialProfile }) => {
                   <Label htmlFor="edit-skills" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Skills</Label>
                   <Input
                     id="edit-skills"
-                    className="rounded-xl border-white/5 bg-slate-900/50"
+                    className="rounded-xl border-white/5 bg-zinc-900/50"
                     placeholder="e.g., Python, JavaScript, Project Management"
                     {...register("skills")}
                   />
@@ -345,7 +345,7 @@ const DashboardView = ({ insights, initialProfile }) => {
                   <Label htmlFor="edit-bio" className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Professional Bio</Label>
                   <Textarea
                     id="edit-bio"
-                    className="h-24 rounded-xl border-white/5 bg-slate-900/50 leading-relaxed"
+                    className="h-24 rounded-xl border-white/5 bg-zinc-900/50 leading-relaxed"
                     placeholder="Tell us about your professional background..."
                     {...register("bio")}
                   />
@@ -379,7 +379,7 @@ const DashboardView = ({ insights, initialProfile }) => {
       {/* Market Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Market Outlook Card */}
-        <Card className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
+        <Card className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
           <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Market Outlook</CardTitle>
@@ -396,7 +396,7 @@ const DashboardView = ({ insights, initialProfile }) => {
         </Card>
 
         {/* Industry Growth Card */}
-        <Card className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
+        <Card className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
           <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Industry Growth</CardTitle>
@@ -413,7 +413,7 @@ const DashboardView = ({ insights, initialProfile }) => {
         </Card>
 
         {/* Demand Level Card */}
-        <Card className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
+        <Card className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
           <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Demand Level</CardTitle>
@@ -432,7 +432,7 @@ const DashboardView = ({ insights, initialProfile }) => {
         </Card>
 
         {/* Top Skills Card */}
-        <Card className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
+        <Card className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between">
           <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
             <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Top Skills</CardTitle>
@@ -453,8 +453,8 @@ const DashboardView = ({ insights, initialProfile }) => {
       </div>
 
       {/* Salary Ranges Chart */}
-      <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-        <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10">
+      <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+        <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-xl bg-primary/5 border border-primary/10 text-primary">
               <DollarSign className="h-4 w-4" />
@@ -489,7 +489,7 @@ const DashboardView = ({ insights, initialProfile }) => {
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-slate-950 border border-white/10 rounded-xl p-3 shadow-xl backdrop-blur-md">
+                        <div className="bg-zinc-950 border border-white/10 rounded-xl p-3 shadow-xl backdrop-blur-md">
                           <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-2">{label}</p>
                           <div className="space-y-1">
                             {payload.map((item) => (
@@ -517,8 +517,8 @@ const DashboardView = ({ insights, initialProfile }) => {
       {/* Industry Trends */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Key Industry Trends */}
-        <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl flex flex-col">
-          <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10">
+        <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl flex flex-col">
+          <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-xl bg-primary/5 border border-primary/10 text-primary">
                 <Compass className="h-4 w-4" />
@@ -544,8 +544,8 @@ const DashboardView = ({ insights, initialProfile }) => {
         </Card>
 
         {/* Recommended Skills */}
-        <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl flex flex-col">
-          <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10">
+        <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl flex flex-col">
+          <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-xl bg-primary/5 border border-primary/10 text-primary">
                 <Sparkles className="h-4 w-4" />
@@ -561,7 +561,7 @@ const DashboardView = ({ insights, initialProfile }) => {
           <CardContent className="pt-6 px-6 md:px-8 flex-1">
             <div className="flex flex-wrap gap-2.5">
               {insights.recommendedSkills.map((skill) => (
-                <Badge key={skill} variant="outline" className="rounded-xl border-white/5 text-xs font-semibold py-1 px-3 bg-slate-950/20 hover:border-primary/20 hover:bg-slate-950/50 transition-colors cursor-default">
+                <Badge key={skill} variant="outline" className="rounded-xl border-white/5 text-xs font-semibold py-1 px-3 bg-zinc-950/20 hover:border-primary/20 hover:bg-zinc-950/50 transition-colors cursor-default">
                   {skill}
                 </Badge>
               ))}

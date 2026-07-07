@@ -60,7 +60,7 @@ export default function MockInterviewForm() {
             value={role}
             onChange={(e) => setRole(e.target.value)}
             placeholder="e.g. Frontend developer, Product Manager"
-            className="rounded-xl border-white/5 bg-slate-950/50"
+            className="rounded-xl border-white/5 bg-zinc-950/50"
             required
           />
         </div>
@@ -74,7 +74,7 @@ export default function MockInterviewForm() {
           <select
             value={experienceLevel}
             onChange={(e) => setExperienceLevel(e.target.value)}
-            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-slate-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
+            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-zinc-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
           >
             <option value="Entry-Level">Entry-Level / Graduate</option>
             <option value="Mid-Level">Mid-Level (2-5 years)</option>
@@ -94,7 +94,7 @@ export default function MockInterviewForm() {
           <select
             value={difficulty}
             onChange={(e) => setDifficulty(e.target.value)}
-            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-slate-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
+            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-zinc-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
           >
             <option value="Easy">Easy</option>
             <option value="Medium">Medium</option>
@@ -111,7 +111,7 @@ export default function MockInterviewForm() {
           <select
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-slate-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
+            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-zinc-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
           >
             <option value="15 Mins">15 Mins (Fast Track)</option>
             <option value="30 Mins">30 Mins (Standard)</option>
@@ -129,7 +129,7 @@ export default function MockInterviewForm() {
           <select
             value={companyType}
             onChange={(e) => setCompanyType(e.target.value)}
-            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-slate-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
+            className="w-full h-10 px-3 rounded-xl border border-white/5 bg-zinc-950/50 text-sm focus:outline-none focus:ring-1 focus:ring-primary text-foreground"
           >
             <option value="Startup">Early-Stage / Growth Startup</option>
             <option value="Product-based">Mid-Sized Product-based Company</option>
@@ -145,13 +145,13 @@ export default function MockInterviewForm() {
           <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Interview Mode
           </Label>
-          <div className="grid grid-cols-2 gap-2 p-1 bg-slate-900 border border-white/5 rounded-xl">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-zinc-900 border border-white/5 rounded-xl">
             <button
               type="button"
               onClick={() => setMode("Text")}
               className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${
                 mode === "Text"
-                  ? "bg-slate-800 text-foreground shadow-inner"
+                  ? "bg-zinc-800 text-foreground shadow-inner"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -163,7 +163,7 @@ export default function MockInterviewForm() {
               onClick={() => setMode("Voice")}
               className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${
                 mode === "Voice"
-                  ? "bg-slate-800 text-foreground shadow-inner"
+                  ? "bg-zinc-800 text-foreground shadow-inner"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -178,13 +178,13 @@ export default function MockInterviewForm() {
           <Label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Camera Option
           </Label>
-          <div className="grid grid-cols-2 gap-2 p-1 bg-slate-900 border border-white/5 rounded-xl">
+          <div className="grid grid-cols-2 gap-2 p-1 bg-zinc-900 border border-white/5 rounded-xl">
             <button
               type="button"
               onClick={() => setCamera(false)}
               className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${
                 !camera
-                  ? "bg-slate-800 text-foreground shadow-inner"
+                  ? "bg-zinc-800 text-foreground shadow-inner"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -196,7 +196,7 @@ export default function MockInterviewForm() {
               onClick={() => setCamera(true)}
               className={`flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${
                 camera
-                  ? "bg-slate-800 text-foreground shadow-inner"
+                  ? "bg-zinc-800 text-foreground shadow-inner"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >

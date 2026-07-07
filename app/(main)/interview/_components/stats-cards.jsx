@@ -27,7 +27,7 @@ export default function StatsCards({ assessments }) {
   return (
     <div className="grid gap-6 md:grid-cols-3">
       {/* Average Score Card */}
-      <Card className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md">
+      <Card className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md">
         <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Average Score</CardTitle>
@@ -44,7 +44,7 @@ export default function StatsCards({ assessments }) {
       </Card>
 
       {/* Questions Practiced Card */}
-      <Card className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md">
+      <Card className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md">
         <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Questions Practiced</CardTitle>
@@ -61,7 +61,7 @@ export default function StatsCards({ assessments }) {
       </Card>
 
       {/* Latest Score Card */}
-      <Card className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md">
+      <Card className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden shadow-md">
         <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-primary/10 via-primary/30 to-primary/10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Latest Score</CardTitle>

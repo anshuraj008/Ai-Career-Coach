@@ -35,8 +35,8 @@ export default function PerformanceChart({ assessments }) {
   }, [assessments]);
 
   return (
-    <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-      <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10">
+    <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+      <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
         <div className="flex items-center gap-2">
           <div className="p-2 rounded-xl bg-primary/5 border border-primary/10 text-primary">
             <BarChart3 className="h-4 w-4" />
@@ -79,7 +79,7 @@ export default function PerformanceChart({ assessments }) {
                   content={({ active, payload }) => {
                     if (active && payload?.length) {
                       return (
-                        <div className="bg-slate-950 border border-white/10 rounded-xl p-3 shadow-xl backdrop-blur-md">
+                        <div className="bg-zinc-950 border border-white/10 rounded-xl p-3 shadow-xl backdrop-blur-md">
                           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1">
                             {payload[0].payload.date}
                           </p>

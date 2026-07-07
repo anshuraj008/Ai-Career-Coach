@@ -40,7 +40,7 @@ export default function CoverLetterList({ coverLetters }) {
 
   if (!coverLetters?.length) {
     return (
-      <Card className="border border-dashed border-white/10 bg-slate-950/20 rounded-2xl py-12 text-center">
+      <Card className="border border-dashed border-white/10 bg-zinc-950/20 rounded-2xl py-12 text-center">
         <CardHeader className="flex flex-col items-center justify-center space-y-4">
           <div className="p-4 rounded-full bg-primary/5 border border-primary/10">
             <FileText className="h-8 w-8 text-primary animate-pulse" />
@@ -61,7 +61,7 @@ export default function CoverLetterList({ coverLetters }) {
       {coverLetters.map((letter) => (
         <Card 
           key={letter.id} 
-          className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/25 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between"
+          className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/25 transition-all duration-300 rounded-2xl overflow-hidden shadow-md flex flex-col justify-between"
         >
           <CardHeader className="pb-4">
             <div className="flex items-start justify-between gap-4">
@@ -81,7 +81,7 @@ export default function CoverLetterList({ coverLetters }) {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-slate-900 rounded-lg transition-colors"
+                    className="h-8 w-8 text-muted-foreground hover:text-foreground hover:bg-zinc-900 rounded-lg transition-colors"
                     onClick={() => router.push(`/ai-cover-letter/${letter.id}`)}
                   >
                     <Eye className="h-4 w-4" />
@@ -95,7 +95,7 @@ export default function CoverLetterList({ coverLetters }) {
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent className="rounded-2xl border border-white/10 bg-slate-950">
+                  <AlertDialogContent className="rounded-2xl border border-white/10 bg-zinc-950">
                     <AlertDialogHeader>
                       <AlertDialogTitle className="text-lg font-bold text-foreground">Delete Cover Letter?</AlertDialogTitle>
                       <AlertDialogDescription className="text-sm text-muted-foreground">

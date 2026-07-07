@@ -54,8 +54,8 @@ export default async function CoverLetterPage() {
         <div className="space-y-6">
           
           {/* Cover Letter Metrics Card */}
-          <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10 flex flex-row items-center gap-2">
+          <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+            <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10 flex flex-row items-center gap-2">
               <TrendingUp className="h-4 w-4 text-primary" />
               <CardTitle className="text-sm font-bold tracking-tight text-foreground">Usage Summary</CardTitle>
             </CardHeader>
@@ -72,8 +72,8 @@ export default async function CoverLetterPage() {
           </Card>
 
           {/* AI Resume Connection Status */}
-          <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10 flex flex-row items-center gap-2">
+          <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+            <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10 flex flex-row items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary animate-pulse" />
               <CardTitle className="text-sm font-bold tracking-tight text-foreground">AI Personalization</CardTitle>
             </CardHeader>
@@ -107,8 +107,8 @@ export default async function CoverLetterPage() {
           </Card>
 
           {/* Writing Tips Checklist */}
-          <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10 flex flex-row items-center gap-2">
+          <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+            <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10 flex flex-row items-center gap-2">
               <Lightbulb className="h-4 w-4 text-primary" />
               <CardTitle className="text-sm font-bold tracking-tight text-foreground">Writing Tips</CardTitle>
             </CardHeader>

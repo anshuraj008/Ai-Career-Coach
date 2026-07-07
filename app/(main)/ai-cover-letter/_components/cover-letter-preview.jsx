@@ -121,7 +121,7 @@ const CoverLetterPreview = ({ content, id }) => {
   return (
     <div className="space-y-6">
       {/* Editor & AI Workspace Controls Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 p-4 border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl shadow-sm">
+      <div className="flex flex-wrap items-center justify-between gap-4 p-4 border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl shadow-sm">
         
         {/* Toggle Editor Mode */}
         <div className="flex items-center gap-2">

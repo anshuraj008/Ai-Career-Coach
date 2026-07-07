@@ -64,7 +64,7 @@ const HeroSection = () => {
         <div className="hero-image-wrapper mt-12 md:mt-16">
           <div 
             ref={imageRef} 
-            className="hero-image rounded-2xl border border-white/10 bg-slate-950 p-1 md:p-2 shadow-[0_0_50px_rgba(255,255,255,0.03)] hover:shadow-[0_0_60px_rgba(255,255,255,0.06)] transition-shadow duration-500 mx-auto max-w-5xl"
+            className="hero-image rounded-2xl border border-white/10 bg-zinc-950 p-1 md:p-2 shadow-[0_0_50px_rgba(255,255,255,0.03)] hover:shadow-[0_0_60px_rgba(255,255,255,0.06)] transition-shadow duration-500 mx-auto max-w-5xl"
           >
             <Image
               src="/banner.jpeg"

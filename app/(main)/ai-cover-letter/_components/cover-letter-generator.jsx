@@ -61,8 +61,8 @@ export default function CoverLetterGenerator() {
   const templates = ["Formal", "Modern", "Creative", "Tech-focused"];
 
   return (
-    <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-      <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/20">
+    <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+      <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/20">
         <CardTitle className="text-lg font-bold flex items-center gap-2 text-foreground">
           <Building className="h-5 w-5 text-primary" />
           Job Details
@@ -80,7 +80,7 @@ export default function CoverLetterGenerator() {
                 <Input
                   id="companyName"
                   placeholder="e.g. Google"
-                  className="rounded-xl border-white/5 bg-slate-950/50"
+                  className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("companyName")}
                 />
               </div>
@@ -97,7 +97,7 @@ export default function CoverLetterGenerator() {
                 <Input
                   id="jobTitle"
                   placeholder="e.g. Frontend Engineer"
-                  className="rounded-xl border-white/5 bg-slate-950/50"
+                  className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("jobTitle")}
                 />
               </div>
@@ -114,7 +114,7 @@ export default function CoverLetterGenerator() {
             <Textarea
               id="jobDescription"
               placeholder="Paste the full job description or key requirements here to tailor the letter..."
-              className="h-44 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
+              className="h-44 rounded-xl border-white/5 bg-zinc-950/50 leading-relaxed"
               {...register("jobDescription")}
             />
             {errors.jobDescription && (
@@ -140,7 +140,7 @@ export default function CoverLetterGenerator() {
                     className={`py-2 px-3 rounded-xl border text-xs font-bold transition-all ${
                       isSelected
                         ? "border-primary bg-primary/5 text-primary shadow-sm scale-[1.03]"
-                        : "border-white/5 bg-slate-950/20 text-muted-foreground hover:bg-slate-900/30 hover:border-white/10"
+                        : "border-white/5 bg-zinc-950/20 text-muted-foreground hover:bg-zinc-900/30 hover:border-white/10"
                     }`}
                   >
                     {t}

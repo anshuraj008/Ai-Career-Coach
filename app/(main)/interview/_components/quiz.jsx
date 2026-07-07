@@ -115,8 +115,8 @@ export default function Quiz({ config = {} }) {
 
   if (!quizData) {
     return (
-      <Card className="mx-2 border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-        <CardHeader className="text-center py-8 border-b border-white/5 bg-slate-950/20 flex flex-col items-center justify-center space-y-3">
+      <Card className="mx-2 border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+        <CardHeader className="text-center py-8 border-b border-white/5 bg-zinc-950/20 flex flex-col items-center justify-center space-y-3">
           <div className="p-4 rounded-full bg-primary/5 border border-primary/10 mb-2">
             <BrainCircuit className="h-8 w-8 text-primary animate-pulse" />
           </div>
@@ -127,7 +127,7 @@ export default function Quiz({ config = {} }) {
             This quiz contains 10 technical questions tailored specific to your registered industry and expertise. Take your time and choose the best answers.
           </p>
         </CardContent>
-        <CardFooter className="bg-slate-950/20 px-6 py-4 flex justify-center border-t border-white/5">
+        <CardFooter className="bg-zinc-950/20 px-6 py-4 flex justify-center border-t border-white/5">
           <Button onClick={() => generateQuizFn(config)} className="w-full max-w-sm rounded-xl py-6 font-bold shadow-md hover:scale-105 transition-all">
             Start AI Mock Quiz
           </Button>
@@ -139,15 +139,15 @@ export default function Quiz({ config = {} }) {
   const question = quizData[currentQuestion];
 
   return (
-    <Card className="mx-2 border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-      <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10">
+    <Card className="mx-2 border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+      <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
         <div className="flex flex-col space-y-3">
           <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <span>Question {currentQuestion + 1} of {quizData.length}</span>
             <span>{Math.round(((currentQuestion + 1) / quizData.length) * 100)}% Complete</span>
           </div>
           {/* Progress Bar */}
-          <div className="w-full bg-slate-900 border border-white/5 h-2 rounded-full overflow-hidden">
+          <div className="w-full bg-zinc-900 border border-white/5 h-2 rounded-full overflow-hidden">
             <div 
               className="bg-primary h-full transition-all duration-500 rounded-full"
               style={{ width: `${((currentQuestion + 1) / quizData.length) * 100}%` }}
@@ -171,7 +171,7 @@ export default function Quiz({ config = {} }) {
                 className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer select-none ${
                   isSelected 
                     ? "border-primary bg-primary/5 text-foreground shadow-sm" 
-                    : "border-white/5 bg-slate-950/20 text-muted-foreground hover:bg-slate-900/30 hover:border-white/10"
+                    : "border-white/5 bg-zinc-950/20 text-muted-foreground hover:bg-zinc-900/30 hover:border-white/10"
                 }`}
                 onClick={() => handleAnswer(option)}
               >
@@ -179,7 +179,7 @@ export default function Quiz({ config = {} }) {
                 <div className={`h-5 w-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
                   isSelected ? "border-primary bg-primary" : "border-muted-foreground/30"
                 }`}>
-                  {isSelected && <div className="h-2 w-2 rounded-full bg-slate-950" />}
+                  {isSelected && <div className="h-2 w-2 rounded-full bg-zinc-950" />}
                 </div>
                 <Label htmlFor={`option-${index}`} className="text-sm font-semibold cursor-pointer leading-relaxed w-full">
                   {option}
@@ -190,7 +190,7 @@ export default function Quiz({ config = {} }) {
         </RadioGroup>
 
         {showExplanation && (
-          <div className="mt-6 p-5 bg-slate-900/40 border border-white/5 rounded-xl space-y-2 animate-fade-in">
+          <div className="mt-6 p-5 bg-zinc-900/40 border border-white/5 rounded-xl space-y-2 animate-fade-in">
             <p className="text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
               <HelpCircle className="h-4 w-4" />
               Explanation
@@ -199,7 +199,7 @@ export default function Quiz({ config = {} }) {
           </div>
         )}
       </CardContent>
-      <CardFooter className="flex justify-between border-t border-white/5 bg-slate-950/20 px-6 py-4">
+      <CardFooter className="flex justify-between border-t border-white/5 bg-zinc-950/20 px-6 py-4">
         {!showExplanation && (
           <Button
             onClick={() => setShowExplanation(true)}

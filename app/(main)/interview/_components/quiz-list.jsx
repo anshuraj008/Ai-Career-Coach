@@ -26,8 +26,8 @@ export default function QuizList({ assessments }) {
 
   return (
     <>
-      <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-        <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10">
+      <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+        <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <CardTitle className="gradient-title text-3xl md:text-4xl">
@@ -56,7 +56,7 @@ export default function QuizList({ assessments }) {
               assessments.map((assessment, i) => (
                 <Card
                   key={assessment.id}
-                  className="cursor-pointer border border-white/5 bg-slate-950/20 hover:bg-slate-950/40 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden group shadow-sm flex flex-col md:flex-row md:items-center justify-between p-6 gap-4"
+                  className="cursor-pointer border border-white/5 bg-zinc-950/20 hover:bg-zinc-950/40 hover:border-primary/20 transition-all duration-300 rounded-2xl overflow-hidden group shadow-sm flex flex-col md:flex-row md:items-center justify-between p-6 gap-4"
                   onClick={() => setSelectedQuiz(assessment)}
                 >
                   <div className="space-y-2">
@@ -98,7 +98,7 @@ export default function QuizList({ assessments }) {
       </Card>
 
       <Dialog open={!!selectedQuiz} onOpenChange={() => setSelectedQuiz(null)}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-slate-950 p-6 md:p-8">
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-zinc-950 p-6 md:p-8">
           <DialogHeader className="border-b border-white/5 pb-4 mb-4">
             <DialogTitle className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
               <Trophy className="h-5 w-5 text-primary" />

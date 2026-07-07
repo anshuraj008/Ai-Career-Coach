@@ -74,7 +74,7 @@ export default async function InterviewPrepPage() {
       <div className="absolute top-0 right-[15%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       {/* Hero Section */}
-      <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl relative">
+      <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-md rounded-3xl overflow-hidden shadow-2xl relative">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 pointer-events-none"></div>
         <CardContent className="p-8 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-8 z-10 relative">
           <div className="space-y-4 max-w-xl">
@@ -119,7 +119,7 @@ export default async function InterviewPrepPage() {
                 <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Avg Score</span>
               </div>
               <div className="text-3xl font-black">{overallAvg}%</div>
-              <div className="w-20 bg-slate-900 border border-white/5 h-1.5 rounded-full overflow-hidden mt-1.5">
+              <div className="w-20 bg-zinc-900 border border-white/5 h-1.5 rounded-full overflow-hidden mt-1.5">
                 <div 
                   className="bg-primary h-full transition-all duration-300"
                   style={{ width: `${overallAvg}%` }}
@@ -144,8 +144,8 @@ export default async function InterviewPrepPage() {
         {/* Left Column: Mock Setup, Stats, and Performance Chart */}
         <div className="lg:col-span-2 space-y-8">
           {/* AI Mock Interview Card */}
-          <Card id="mock-setup" className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-            <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10">
+          <Card id="mock-setup" className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+            <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 rounded-xl bg-primary/5 border border-primary/10 text-primary">
                   <BrainCircuit className="h-5 w-5" />
@@ -189,7 +189,7 @@ export default async function InterviewPrepPage() {
                 className="w-full"
               >
                 <Card 
-                  className="group relative border border-white/5 bg-slate-950/40 hover:bg-slate-950/60 hover:border-primary/20 transition-all duration-300 rounded-xl overflow-hidden p-4 shadow-sm cursor-pointer"
+                  className="group relative border border-white/5 bg-zinc-950/40 hover:bg-zinc-950/60 hover:border-primary/20 transition-all duration-300 rounded-xl overflow-hidden p-4 shadow-sm cursor-pointer"
                 >
                 <div className="flex items-start justify-between gap-4">
                   <div className="space-y-1.5 flex-1">
@@ -219,7 +219,7 @@ export default async function InterviewPrepPage() {
                         <span>Completion</span>
                         <span>{cat.completion}%</span>
                       </div>
-                      <div className="w-full bg-slate-900 border border-white/5 h-1 rounded-full overflow-hidden">
+                      <div className="w-full bg-zinc-900 border border-white/5 h-1 rounded-full overflow-hidden">
                         <div 
                           className="bg-primary h-full transition-all duration-300"
                           style={{ width: `${cat.completion}%` }}

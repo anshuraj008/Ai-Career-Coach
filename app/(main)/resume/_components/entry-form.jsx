@@ -107,7 +107,7 @@ export function EntryForm({ type, entries, onChange }) {
         {entries.map((item, index) => (
           <div
             key={index}
-            className="relative p-6 border border-white/5 rounded-2xl bg-slate-950/30 hover:border-primary/20 hover:bg-slate-950/50 transition-all duration-300 group flex items-start justify-between gap-4 shadow-sm"
+            className="relative p-6 border border-white/5 rounded-2xl bg-zinc-950/30 hover:border-primary/20 hover:bg-zinc-950/50 transition-all duration-300 group flex items-start justify-between gap-4 shadow-sm"
           >
             <div className="space-y-2">
               <div className="flex items-center gap-2">
@@ -139,7 +139,7 @@ export function EntryForm({ type, entries, onChange }) {
       </div>
 
       {isAdding && (
-        <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+        <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
           <CardHeader className="border-b border-white/5 pb-4">
             <CardTitle className="text-lg font-bold flex items-center gap-2 text-foreground">
               <PlusCircle className="h-5 w-5 text-primary animate-pulse" />
@@ -152,7 +152,7 @@ export function EntryForm({ type, entries, onChange }) {
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Title / Position</label>
                 <Input
                   placeholder="e.g. Software Engineer"
-                  className="rounded-xl border-white/5 bg-slate-950/50"
+                  className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("title")}
                   error={errors.title}
                 />
@@ -164,7 +164,7 @@ export function EntryForm({ type, entries, onChange }) {
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Organization / Company</label>
                 <Input
                   placeholder="e.g. Google"
-                  className="rounded-xl border-white/5 bg-slate-950/50"
+                  className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("organization")}
                   error={errors.organization}
                 />
@@ -181,7 +181,7 @@ export function EntryForm({ type, entries, onChange }) {
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Start Date</label>
                 <Input
                   type="month"
-                  className="rounded-xl border-white/5 bg-slate-950/50"
+                  className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("startDate")}
                   error={errors.startDate}
                 />
@@ -195,7 +195,7 @@ export function EntryForm({ type, entries, onChange }) {
                 <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">End Date</label>
                 <Input
                   type="month"
-                  className="rounded-xl border-white/5 bg-slate-950/50"
+                  className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("endDate")}
                   disabled={current}
                   error={errors.endDate}
@@ -208,7 +208,7 @@ export function EntryForm({ type, entries, onChange }) {
               </div>
             </div>
 
-            <div className="flex items-center space-x-2 bg-slate-900/30 border border-white/5 rounded-xl p-3 max-w-fit">
+            <div className="flex items-center space-x-2 bg-zinc-900/30 border border-white/5 rounded-xl p-3 max-w-fit">
               <input
                 type="checkbox"
                 id="current"
@@ -230,7 +230,7 @@ export function EntryForm({ type, entries, onChange }) {
               <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Description</label>
               <Textarea
                 placeholder={`Describe your key achievements, responsibilities, and technologies used...`}
-                className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
+                className="h-32 rounded-xl border-white/5 bg-zinc-950/50 leading-relaxed"
                 {...register("description")}
                 error={errors.description}
               />
@@ -262,7 +262,7 @@ export function EntryForm({ type, entries, onChange }) {
               )}
             </Button>
           </CardContent>
-          <CardFooter className="flex justify-end gap-2 border-t border-white/5 bg-slate-950/20 px-6 py-4">
+          <CardFooter className="flex justify-end gap-2 border-t border-white/5 bg-zinc-950/20 px-6 py-4">
             <Button
               type="button"
               variant="outline"

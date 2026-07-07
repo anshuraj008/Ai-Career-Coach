@@ -48,7 +48,7 @@ export default function LandingPage() {
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="border border-white/5 bg-slate-950/40 backdrop-blur-md hover:border-primary/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.03)] transition-all duration-500 transform hover:-translate-y-2 group rounded-2xl overflow-hidden"
+                className="border border-white/5 bg-zinc-950/40 backdrop-blur-md hover:border-primary/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.03)] transition-all duration-500 transform hover:-translate-y-2 group rounded-2xl overflow-hidden"
               >
                 <CardContent className="pt-8 pb-8 px-6 text-center flex flex-col items-center h-full justify-between">
                   <div className="flex flex-col items-center justify-center">
@@ -70,7 +70,7 @@ export default function LandingPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="w-full py-16 md:py-24 bg-slate-950/40 backdrop-blur-md border-y border-white/5 relative">
+      <section className="w-full py-16 md:py-24 bg-zinc-950/40 backdrop-blur-md border-y border-white/5 relative">
         <div className="container mx-auto px-4 md:px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto text-center">
             {[
@@ -111,7 +111,7 @@ export default function LandingPage() {
             {howItWorks.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center text-center space-y-5 p-6 rounded-2xl bg-slate-950/20 border border-white/5 hover:border-primary/20 transition-all duration-300 relative group"
+                className="flex flex-col items-center text-center space-y-5 p-6 rounded-2xl bg-zinc-950/20 border border-white/5 hover:border-primary/20 transition-all duration-300 relative group"
               >
                 <span className="absolute top-4 right-6 text-5xl font-black text-white/5 group-hover:text-primary/10 transition-colors duration-300">
                   {`0${index + 1}`}
@@ -128,7 +128,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="w-full py-20 md:py-28 bg-slate-950/30 backdrop-blur-sm border-t border-white/5">
+      <section className="w-full py-20 md:py-28 bg-zinc-950/30 backdrop-blur-sm border-t border-white/5">
         <div className="container mx-auto px-4 md:px-6">
           <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
             <h2 className="text-4xl font-extrabold tracking-tight sm:text-5xl gradient-title pb-3">
@@ -142,7 +142,7 @@ export default function LandingPage() {
             {testimonial.map((test, index) => (
               <Card
                 key={index}
-                className="bg-slate-950/40 border border-white/5 hover:border-primary/20 transition-all duration-300 rounded-2xl flex flex-col justify-between"
+                className="bg-zinc-950/40 border border-white/5 hover:border-primary/20 transition-all duration-300 rounded-2xl flex flex-col justify-between"
               >
                 <CardContent className="pt-8 pb-8 px-6 flex flex-col justify-between h-full space-y-6">
                   <blockquote className="text-muted-foreground text-sm md:text-base leading-relaxed italic relative">
@@ -197,7 +197,7 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto bg-slate-950/20 border border-white/5 rounded-2xl p-6 md:p-8 shadow-xl">
+          <div className="max-w-3xl mx-auto bg-zinc-950/20 border border-white/5 rounded-2xl p-6 md:p-8 shadow-xl">
             <Accordion type="single" collapsible className="w-full space-y-2">
               {faqs.map((faq, index) => (
                 <AccordionItem
@@ -220,7 +220,7 @@ export default function LandingPage() {
 
       {/* CTA Section */}
       <section className="w-full py-10 px-4">
-        <div className="max-w-5xl mx-auto overflow-hidden rounded-3xl bg-slate-950/80 border border-white/5 shadow-2xl relative">
+        <div className="max-w-5xl mx-auto overflow-hidden rounded-3xl bg-zinc-950/80 border border-white/5 shadow-2xl relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/5 pointer-events-none"></div>
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-primary/10 rounded-full blur-[80px] pointer-events-none"></div>
           <div className="flex flex-col items-center justify-center space-y-6 text-center py-20 px-6 relative z-10">

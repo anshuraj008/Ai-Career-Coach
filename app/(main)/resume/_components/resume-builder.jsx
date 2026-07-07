@@ -328,16 +328,16 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-[320px] mb-8 p-1 bg-slate-950/80 border border-white/5 rounded-xl shadow-inner">
+        <TabsList className="grid w-full grid-cols-2 max-w-[320px] mb-8 p-1 bg-zinc-950/80 border border-white/5 rounded-xl shadow-inner">
           <TabsTrigger 
             value="edit"
-            className="rounded-lg data-[state=active]:bg-slate-900 data-[state=active]:text-primary transition-all duration-300 font-semibold py-2 text-xs"
+            className="rounded-lg data-[state=active]:bg-zinc-900 data-[state=active]:text-primary transition-all duration-300 font-semibold py-2 text-xs"
           >
             Form Fields
           </TabsTrigger>
           <TabsTrigger 
             value="preview"
-            className="rounded-lg data-[state=active]:bg-slate-900 data-[state=active]:text-primary transition-all duration-300 font-semibold py-2 text-xs"
+            className="rounded-lg data-[state=active]:bg-zinc-900 data-[state=active]:text-primary transition-all duration-300 font-semibold py-2 text-xs"
           >
             Markdown Preview
           </TabsTrigger>
@@ -351,7 +351,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
                 
                 {/* Contact Information */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <User className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Contact Information</h3>
@@ -363,7 +363,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                         {...register("contactInfo.email")}
                         type="email"
                         placeholder="yourname@domain.com"
-                        className="rounded-xl border-white/5 bg-slate-950/50"
+                        className="rounded-xl border-white/5 bg-zinc-950/50"
                         error={errors.contactInfo?.email}
                       />
                       {errors.contactInfo?.email && (
@@ -378,7 +378,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                         {...register("contactInfo.mobile")}
                         type="tel"
                         placeholder="e.g. +1 555-0199"
-                        className="rounded-xl border-white/5 bg-slate-950/50"
+                        className="rounded-xl border-white/5 bg-zinc-950/50"
                       />
                       {errors.contactInfo?.mobile && (
                         <p className="text-sm text-red-500">
@@ -392,7 +392,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                         {...register("contactInfo.linkedin")}
                         type="url"
                         placeholder="https://linkedin.com/in/username"
-                        className="rounded-xl border-white/5 bg-slate-950/50"
+                        className="rounded-xl border-white/5 bg-zinc-950/50"
                       />
                       {errors.contactInfo?.linkedin && (
                         <p className="text-sm text-red-500">
@@ -406,7 +406,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                         {...register("contactInfo.twitter")}
                         type="url"
                         placeholder="https://x.com/username"
-                        className="rounded-xl border-white/5 bg-slate-950/50"
+                        className="rounded-xl border-white/5 bg-zinc-950/50"
                       />
                       {errors.contactInfo?.twitter && (
                         <p className="text-sm text-red-500">
@@ -418,7 +418,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Summary */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <FileText className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Professional Summary</h3>
@@ -429,7 +429,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                     render={({ field }) => (
                       <Textarea
                         {...field}
-                        className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
+                        className="h-32 rounded-xl border-white/5 bg-zinc-950/50 leading-relaxed"
                         placeholder="Write a compelling, impact-focused summary highlighting your value proposition..."
                         error={errors.summary}
                       />
@@ -441,7 +441,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Skills */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <Sparkles className="h-5 w-5 text-primary animate-pulse" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Skills</h3>
@@ -452,7 +452,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                     render={({ field }) => (
                       <Textarea
                         {...field}
-                        className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
+                        className="h-32 rounded-xl border-white/5 bg-zinc-950/50 leading-relaxed"
                         placeholder="e.g. Languages: JavaScript, Python. Tools: Git, Docker, Next.js. Methodologies: Agile..."
                         error={errors.skills}
                       />
@@ -464,7 +464,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Experience */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <Briefcase className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Work Experience</h3>
@@ -488,7 +488,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Internships */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <BookOpen className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Internships</h3>
@@ -507,7 +507,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Projects */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <FolderGit className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Projects</h3>
@@ -531,7 +531,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Education */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <GraduationCap className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Education</h3>
@@ -555,7 +555,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Certifications */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <Award className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Certifications</h3>
@@ -574,7 +574,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 </div>
 
                 {/* Achievements */}
-                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <TrendingUp className="h-5 w-5 text-primary" />
                     <h3 className="text-lg font-bold tracking-tight text-foreground">Achievements</h3>
@@ -614,8 +614,8 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
             <div className="space-y-6">
               
               {/* ATS & Completion Stats */}
-              <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl sticky top-24">
-                <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10 flex flex-row items-center gap-2">
+              <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl sticky top-24">
+                <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10 flex flex-row items-center gap-2">
                   <Settings className="h-4 w-4 text-primary" />
                   <CardTitle className="text-sm font-bold tracking-tight text-foreground">Resume Insights</CardTitle>
                 </CardHeader>
@@ -645,7 +645,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                       <span className="text-muted-foreground uppercase tracking-wider">Live ATS Score</span>
                       <span className="text-emerald-500 font-extrabold">{atsScore}/100</span>
                     </div>
-                    <div className="w-full bg-slate-900 border border-white/5 h-2 rounded-full overflow-hidden">
+                    <div className="w-full bg-zinc-900 border border-white/5 h-2 rounded-full overflow-hidden">
                       <div 
                         className={`h-full transition-all duration-500 ${
                           atsScore < 50 ? "bg-rose-500" : atsScore < 75 ? "bg-amber-500" : "bg-emerald-500"
@@ -667,8 +667,8 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
               </Card>
 
               {/* Optimization Recommendations checklist */}
-              <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-                <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10 flex flex-row items-center gap-2">
+              <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+                <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10 flex flex-row items-center gap-2">
                   <Sparkles className="h-4 w-4 text-primary animate-pulse" />
                   <CardTitle className="text-sm font-bold tracking-tight text-foreground">ATS Tips & Warnings</CardTitle>
                 </CardHeader>
@@ -688,7 +688,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
         </TabsContent>
 
         <TabsContent value="preview" className="space-y-4 animate-fade-in">
-          <div className="flex items-center justify-between gap-4 p-4 border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl shadow-sm">
+          <div className="flex items-center justify-between gap-4 p-4 border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl shadow-sm">
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
@@ -741,7 +741,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
 
           {resumeMode === "preview" ? (
             /* Premium Paper Canvas Mockup */
-            <div className="p-4 md:p-8 bg-slate-950/20 border border-white/5 rounded-3xl flex justify-center shadow-inner overflow-x-auto">
+            <div className="p-4 md:p-8 bg-zinc-950/20 border border-white/5 rounded-3xl flex justify-center shadow-inner overflow-x-auto">
               <div 
                 id="resume-pdf"
                 className="w-full max-w-[800px] min-h-[1050px] bg-white text-black p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate max-w-none select-text"
