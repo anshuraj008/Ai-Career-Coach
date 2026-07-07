@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -13,6 +13,15 @@ import {
   FileText,
   User,
   Sparkles,
+  Award,
+  BookOpen,
+  Briefcase,
+  FolderGit,
+  GraduationCap,
+  Settings,
+  TrendingUp,
+  Activity,
+  Clock,
 } from "lucide-react";
 import { toast } from "sonner";
 import MDEditor from "@uiw/react-md-editor";
@@ -20,14 +29,24 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
 import { saveResume } from "@/actions/resume";
 import { EntryForm } from "./entry-form";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
-import { entriesToMarkdown } from "@/app/lib/helper";
+import { entriesToMarkdown, markdownToEntries } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
+import { format } from "date-fns";
 
-export default function ResumeBuilder({ initialContent }) {
+export default function ResumeBuilder({ initialContent, resumeData }) {
   const [activeTab, setActiveTab] = useState("edit");
   const [previewContent, setPreviewContent] = useState(initialContent);
   const { user } = useUser();
@@ -38,16 +57,25 @@ export default function ResumeBuilder({ initialContent }) {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(resumeSchema),
     defaultValues: {
-      contactInfo: {},
+      contactInfo: {
+        email: "",
+        mobile: "",
+        linkedin: "",
+        twitter: "",
+      },
       summary: "",
       skills: "",
       experience: [],
       education: [],
       projects: [],
+      certifications: [],
+      internships: [],
+      achievements: [],
     },
   });
 
@@ -58,12 +86,16 @@ export default function ResumeBuilder({ initialContent }) {
     error: saveError,
   } = useFetch(saveResume);
 
-  // Watch form fields for preview updates
   const formValues = watch();
 
+  // Populate form defaults from existing markdown
   useEffect(() => {
-    if (initialContent) setActiveTab("preview");
-  }, [initialContent]);
+    if (initialContent) {
+      const parsedValues = markdownToEntries(initialContent);
+      reset(parsedValues);
+      setPreviewContent(initialContent);
+    }
+  }, [initialContent, reset]);
 
   // Update preview content when form values change
   useEffect(() => {
@@ -93,27 +125,28 @@ export default function ResumeBuilder({ initialContent }) {
       parts.push(`💼 [LinkedIn](${contactInfo.linkedin})`);
     if (contactInfo.twitter) parts.push(`🐦 [Twitter](${contactInfo.twitter})`);
 
+    const fullName = user?.fullName || "Professional Profile";
     return parts.length > 0
-      ? `## <div align="center">${user.fullName}</div>
-        \n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
+      ? `## <div align="center">${fullName}</div>\n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
       : "";
   };
 
   const getCombinedContent = () => {
-    const { summary, skills, experience, education, projects } = formValues;
+    const { summary, skills, experience, education, projects, certifications, internships, achievements } = formValues;
     return [
       getContactMarkdown(),
       summary && `## Professional Summary\n\n${summary}`,
       skills && `## Skills\n\n${skills}`,
       entriesToMarkdown(experience, "Work Experience"),
-      entriesToMarkdown(education, "Education"),
+      entriesToMarkdown(internships, "Internships"),
       entriesToMarkdown(projects, "Projects"),
+      entriesToMarkdown(education, "Education"),
+      entriesToMarkdown(certifications, "Certifications"),
+      entriesToMarkdown(achievements, "Achievements"),
     ]
       .filter(Boolean)
       .join("\n\n");
   };
-
-  const [isGenerating, setIsGenerating] = useState(false);
 
   const generatePDF = async () => {
     setIsGenerating(true);
@@ -136,32 +169,123 @@ export default function ResumeBuilder({ initialContent }) {
     }
   };
 
+  const [isGenerating, setIsGenerating] = useState(false);
+
   const onSubmit = async (data) => {
     try {
-      const formattedContent = previewContent
-        .replace(/\n/g, "\n") // Normalize newlines
-        .replace(/\n\s*\n/g, "\n\n") // Normalize multiple newlines to double newlines
+      const combined = getCombinedContent();
+      const formattedContent = combined
+        .replace(/\n/g, "\n")
+        .replace(/\n\s*\n/g, "\n\n")
         .trim();
 
-      console.log(previewContent, formattedContent);
-      await saveResumeFn(previewContent);
+      await saveResumeFn(formattedContent);
     } catch (error) {
       console.error("Save error:", error);
     }
   };
 
+  // Completion Percentage calculation
+  const completionPercentage = useMemo(() => {
+    let score = 0;
+    const { contactInfo, summary, skills, experience, education, projects, certifications, internships, achievements } = formValues;
+    
+    if (contactInfo?.email) score += 10;
+    if (contactInfo?.mobile) score += 5;
+    if (contactInfo?.linkedin) score += 5;
+    if (summary && summary.trim().length > 10) score += 15;
+    if (skills && skills.trim().length > 5) score += 15;
+    if (experience && experience.length > 0) score += 15;
+    if (education && education.length > 0) score += 15;
+    if (projects && projects.length > 0) score += 10;
+    if ((certifications && certifications.length > 0) || (internships && internships.length > 0) || (achievements && achievements.length > 0)) {
+      score += 10;
+    }
+    return Math.min(score, 100);
+  }, [formValues]);
+
+  // ATS Score calculation (interactive)
+  const atsScore = useMemo(() => {
+    let score = 30; // base score
+    const { contactInfo, summary, skills, experience, education, projects, certifications, internships, achievements } = formValues;
+
+    if (contactInfo?.email && contactInfo?.linkedin) score += 10;
+    if (summary && summary.trim().length > 30) score += 10;
+    if (skills && skills.trim().split(",").length > 4) score += 10;
+    if (experience && experience.length > 0) score += 15;
+    if (education && education.length > 0) score += 10;
+    if (projects && projects.length > 0) score += 10;
+    if (certifications && certifications.length > 0) score += 5;
+
+    const allDescriptions = [
+      ...(experience || []),
+      ...(projects || []),
+      ...(internships || []),
+    ]
+      .map((e) => e.description || "")
+      .join(" ");
+
+    const hasMetrics = /[\d%]+|\b(million|billion|thousands|percent|ROI|growth)\b/i.test(allDescriptions);
+    if (hasMetrics) score += 10;
+
+    return Math.min(score, 100);
+  }, [formValues]);
+
+  // Strength Indicator calculation
+  const strengthIndicator = useMemo(() => {
+    if (atsScore < 50) return { label: "Weak Profile", color: "text-rose-400 border-rose-400/10 bg-rose-400/5" };
+    if (atsScore < 70) return { label: "Good Profile", color: "text-amber-400 border-amber-400/10 bg-amber-400/5" };
+    if (atsScore < 85) return { label: "Strong Profile", color: "text-emerald-400 border-emerald-400/10 bg-emerald-400/5" };
+    return { label: "Excellent Profile", color: "text-primary border-primary/10 bg-primary/5" };
+  }, [atsScore]);
+
+  // Dynamic recommendations for user resume
+  const recommendations = useMemo(() => {
+    const tips = [];
+    const { contactInfo, summary, skills, experience, education, projects } = formValues;
+
+    if (!contactInfo?.linkedin) tips.push("Add your LinkedIn profile link to improve contact completeness.");
+    if (!summary || summary.trim().length < 30) tips.push("Expand your Professional Summary with a brief, high-impact value proposition statement.");
+    if (!skills || skills.trim().split(",").length < 5) tips.push("List at least 5 key technical or core soft skills.");
+    if (!experience || experience.length === 0) tips.push("Add at least one professional work experience or internship.");
+    if (!projects || projects.length === 0) tips.push("List matching academic or personal engineering projects.");
+
+    const allDescriptions = [
+      ...(experience || []),
+      ...(projects || []),
+    ]
+      .map((e) => e.description || "")
+      .join(" ");
+    const hasMetrics = /[\d%]+|\b(million|billion|thousands|percent|ROI|growth)\b/i.test(allDescriptions);
+    if (!hasMetrics) tips.push("Quantify achievements (e.g. 'Improved performance by 15%') in experience descriptions.");
+
+    if (tips.length === 0) tips.push("Looking great! Your resume format complies with major ATS guidelines.");
+    return tips;
+  }, [formValues]);
+
+  // Format last saved text
+  const lastSavedText = useMemo(() => {
+    const dateToUse = saveResult?.updatedAt || resumeData?.updatedAt;
+    if (!dateToUse) return "Not saved yet";
+    try {
+      return format(new Date(dateToUse), "dd MMM yyyy 'at' hh:mm a");
+    } catch {
+      return "Just now";
+    }
+  }, [saveResult, resumeData]);
+
   return (
-    <div data-color-mode="light" className="space-y-6 max-w-5xl mx-auto px-4 md:px-0 py-4">
+    <div data-color-mode="light" className="space-y-6 max-w-5xl mx-auto px-4 md:px-0 py-4 relative">
       {/* Decorative gradient glow top background */}
       <div className="absolute top-0 right-[20%] w-[350px] h-[350px] bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
 
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-white/5 pb-6">
         <div className="space-y-1">
           <h1 className="font-extrabold tracking-tight gradient-title text-4xl md:text-5xl">
-            Resume Builder
+            AI Resume Builder
           </h1>
           <p className="text-sm text-muted-foreground">
-            Create an ATS-optimized, professional resume with AI enhancements.
+            Create an ATS-optimized, professional resume with live visual checks.
           </p>
         </div>
         <div className="flex flex-row gap-2 w-full md:w-auto">
@@ -220,205 +344,347 @@ export default function ResumeBuilder({ initialContent }) {
         </TabsList>
 
         <TabsContent value="edit">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            {/* Contact Information */}
-            <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
-              <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
-                <User className="h-5 w-5 text-primary" />
-                <h3 className="text-lg font-bold tracking-tight text-foreground">Contact Information</h3>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email Address</label>
-                  <Input
-                    {...register("contactInfo.email")}
-                    type="email"
-                    placeholder="yourname@domain.com"
-                    className="rounded-xl border-white/5 bg-slate-950/50"
-                    error={errors.contactInfo?.email}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            {/* Left / Main form section columns */}
+            <div className="lg:col-span-2 space-y-8">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                
+                {/* Contact Information */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <User className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Contact Information</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Email Address</label>
+                      <Input
+                        {...register("contactInfo.email")}
+                        type="email"
+                        placeholder="yourname@domain.com"
+                        className="rounded-xl border-white/5 bg-slate-950/50"
+                        error={errors.contactInfo?.email}
+                      />
+                      {errors.contactInfo?.email && (
+                        <p className="text-sm text-red-500">
+                          {errors.contactInfo.email.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Mobile Number</label>
+                      <Input
+                        {...register("contactInfo.mobile")}
+                        type="tel"
+                        placeholder="e.g. +1 555-0199"
+                        className="rounded-xl border-white/5 bg-slate-950/50"
+                      />
+                      {errors.contactInfo?.mobile && (
+                        <p className="text-sm text-red-500">
+                          {errors.contactInfo.mobile.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">LinkedIn URL</label>
+                      <Input
+                        {...register("contactInfo.linkedin")}
+                        type="url"
+                        placeholder="https://linkedin.com/in/username"
+                        className="rounded-xl border-white/5 bg-slate-950/50"
+                      />
+                      {errors.contactInfo?.linkedin && (
+                        <p className="text-sm text-red-500">
+                          {errors.contactInfo.linkedin.message}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Twitter/X Profile</label>
+                      <Input
+                        {...register("contactInfo.twitter")}
+                        type="url"
+                        placeholder="https://x.com/username"
+                        className="rounded-xl border-white/5 bg-slate-950/50"
+                      />
+                      {errors.contactInfo?.twitter && (
+                        <p className="text-sm text-red-500">
+                          {errors.contactInfo.twitter.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Summary */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <FileText className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Professional Summary</h3>
+                  </div>
+                  <Controller
+                    name="summary"
+                    control={control}
+                    render={({ field }) => (
+                      <Textarea
+                        {...field}
+                        className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
+                        placeholder="Write a compelling, impact-focused summary highlighting your value proposition..."
+                        error={errors.summary}
+                      />
+                    )}
                   />
-                  {errors.contactInfo?.email && (
+                  {errors.summary && (
+                    <p className="text-sm text-red-500">{errors.summary.message}</p>
+                  )}
+                </div>
+
+                {/* Skills */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <Sparkles className="h-5 w-5 text-primary animate-pulse" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Skills</h3>
+                  </div>
+                  <Controller
+                    name="skills"
+                    control={control}
+                    render={({ field }) => (
+                      <Textarea
+                        {...field}
+                        className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
+                        placeholder="e.g. Languages: JavaScript, Python. Tools: Git, Docker, Next.js. Methodologies: Agile..."
+                        error={errors.skills}
+                      />
+                    )}
+                  />
+                  {errors.skills && (
+                    <p className="text-sm text-red-500">{errors.skills.message}</p>
+                  )}
+                </div>
+
+                {/* Experience */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <Briefcase className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Work Experience</h3>
+                  </div>
+                  <Controller
+                    name="experience"
+                    control={control}
+                    render={({ field }) => (
+                      <EntryForm
+                        type="Experience"
+                        entries={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                  {errors.experience && (
                     <p className="text-sm text-red-500">
-                      {errors.contactInfo.email.message}
+                      {errors.experience.message}
                     </p>
                   )}
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Mobile Number</label>
-                  <Input
-                    {...register("contactInfo.mobile")}
-                    type="tel"
-                    placeholder="e.g. +1 555-0199"
-                    className="rounded-xl border-white/5 bg-slate-950/50"
+
+                {/* Internships */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <BookOpen className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Internships</h3>
+                  </div>
+                  <Controller
+                    name="internships"
+                    control={control}
+                    render={({ field }) => (
+                      <EntryForm
+                        type="Internship"
+                        entries={field.value || []}
+                        onChange={field.onChange}
+                      />
+                    )}
                   />
-                  {errors.contactInfo?.mobile && (
+                </div>
+
+                {/* Projects */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <FolderGit className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Projects</h3>
+                  </div>
+                  <Controller
+                    name="projects"
+                    control={control}
+                    render={({ field }) => (
+                      <EntryForm
+                        type="Project"
+                        entries={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
+                  />
+                  {errors.projects && (
                     <p className="text-sm text-red-500">
-                      {errors.contactInfo.mobile.message}
+                      {errors.projects.message}
                     </p>
                   )}
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">LinkedIn URL</label>
-                  <Input
-                    {...register("contactInfo.linkedin")}
-                    type="url"
-                    placeholder="https://linkedin.com/in/username"
-                    className="rounded-xl border-white/5 bg-slate-950/50"
+
+                {/* Education */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <GraduationCap className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Education</h3>
+                  </div>
+                  <Controller
+                    name="education"
+                    control={control}
+                    render={({ field }) => (
+                      <EntryForm
+                        type="Education"
+                        entries={field.value}
+                        onChange={field.onChange}
+                      />
+                    )}
                   />
-                  {errors.contactInfo?.linkedin && (
+                  {errors.education && (
                     <p className="text-sm text-red-500">
-                      {errors.contactInfo.linkedin.message}
+                      {errors.education.message}
                     </p>
                   )}
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Twitter/X Profile</label>
-                  <Input
-                    {...register("contactInfo.twitter")}
-                    type="url"
-                    placeholder="https://x.com/username"
-                    className="rounded-xl border-white/5 bg-slate-950/50"
+
+                {/* Certifications */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <Award className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Certifications</h3>
+                  </div>
+                  <Controller
+                    name="certifications"
+                    control={control}
+                    render={({ field }) => (
+                      <EntryForm
+                        type="Certification"
+                        entries={field.value || []}
+                        onChange={field.onChange}
+                      />
+                    )}
                   />
-                  {errors.contactInfo?.twitter && (
-                    <p className="text-sm text-red-500">
-                      {errors.contactInfo.twitter.message}
-                    </p>
-                  )}
                 </div>
-              </div>
-            </div>
 
-            {/* Summary */}
-            <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
-              <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
-                <FileText className="h-5 w-5 text-primary" />
-                <h3 className="text-lg font-bold tracking-tight text-foreground">Professional Summary</h3>
-              </div>
-              <Controller
-                name="summary"
-                control={control}
-                render={({ field }) => (
-                  <Textarea
-                    {...field}
-                    className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
-                    placeholder="Write a compelling, impact-focused summary highlighting your value proposition..."
-                    error={errors.summary}
+                {/* Achievements */}
+                <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
+                  <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
+                    <TrendingUp className="h-5 w-5 text-primary" />
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Achievements</h3>
+                  </div>
+                  <Controller
+                    name="achievements"
+                    control={control}
+                    render={({ field }) => (
+                      <EntryForm
+                        type="Achievement"
+                        entries={field.value || []}
+                        onChange={field.onChange}
+                      />
+                    )}
                   />
-                )}
-              />
-              {errors.summary && (
-                <p className="text-sm text-red-500">{errors.summary.message}</p>
-              )}
+                </div>
+
+                <div className="flex justify-end pt-4">
+                  <Button type="submit" disabled={isSaving} className="rounded-xl px-8 shadow-md">
+                    {isSaving ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Saving Changes...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="mr-2 h-4 w-4" />
+                        Submit & View Resume
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </form>
             </div>
 
-            {/* Skills */}
-            <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
-              <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
-                <Sparkles className="h-5 w-5 text-primary animate-pulse" />
-                <h3 className="text-lg font-bold tracking-tight text-foreground">Skills</h3>
-              </div>
-              <Controller
-                name="skills"
-                control={control}
-                render={({ field }) => (
-                  <Textarea
-                    {...field}
-                    className="h-32 rounded-xl border-white/5 bg-slate-950/50 leading-relaxed"
-                    placeholder="e.g. Languages: JavaScript, Python. Tools: Git, Docker, Next.js. Methodologies: Agile..."
-                    error={errors.skills}
-                  />
-                )}
-              />
-              {errors.skills && (
-                <p className="text-sm text-red-500">{errors.skills.message}</p>
-              )}
-            </div>
+            {/* Right sidebar stats and recommendation cards */}
+            <div className="space-y-6">
+              
+              {/* ATS & Completion Stats */}
+              <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl sticky top-24">
+                <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10 flex flex-row items-center gap-2">
+                  <Settings className="h-4 w-4 text-primary" />
+                  <CardTitle className="text-sm font-bold tracking-tight text-foreground">Resume Insights</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6 pt-6">
+                  
+                  {/* Strength Indicator */}
+                  <div className="space-y-2">
+                    <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">Resume Strength</span>
+                    <Badge variant="outline" className={`text-xs font-bold px-3 py-1 rounded-xl w-full text-center flex justify-center items-center gap-1.5 ${strengthIndicator.color}`}>
+                      <Activity className="h-3.5 w-3.5" />
+                      {strengthIndicator.label}
+                    </Badge>
+                  </div>
 
-            {/* Experience */}
-            <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
-              <div className="border-b border-white/5 pb-4 mb-4">
-                <h3 className="text-lg font-bold tracking-tight text-foreground">Work Experience</h3>
-              </div>
-              <Controller
-                name="experience"
-                control={control}
-                render={({ field }) => (
-                  <EntryForm
-                    type="Experience"
-                    entries={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-              {errors.experience && (
-                <p className="text-sm text-red-500">
-                  {errors.experience.message}
-                </p>
-              )}
-            </div>
+                  {/* Dynamic Completion Percentage */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs font-semibold">
+                      <span className="text-muted-foreground uppercase tracking-wider">Completion Rate</span>
+                      <span className="text-primary font-bold">{completionPercentage}%</span>
+                    </div>
+                    <Progress value={completionPercentage} className="h-2 rounded-full" />
+                  </div>
 
-            {/* Education */}
-            <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
-              <div className="border-b border-white/5 pb-4 mb-4">
-                <h3 className="text-lg font-bold tracking-tight text-foreground">Education</h3>
-              </div>
-              <Controller
-                name="education"
-                control={control}
-                render={({ field }) => (
-                  <EntryForm
-                    type="Education"
-                    entries={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-              {errors.education && (
-                <p className="text-sm text-red-500">
-                  {errors.education.message}
-                </p>
-              )}
-            </div>
+                  {/* Dynamic ATS score calculation */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs font-semibold">
+                      <span className="text-muted-foreground uppercase tracking-wider">Live ATS Score</span>
+                      <span className="text-emerald-500 font-extrabold">{atsScore}/100</span>
+                    </div>
+                    <div className="w-full bg-slate-900 border border-white/5 h-2 rounded-full overflow-hidden">
+                      <div 
+                        className={`h-full transition-all duration-500 ${
+                          atsScore < 50 ? "bg-rose-500" : atsScore < 75 ? "bg-amber-500" : "bg-emerald-500"
+                        }`}
+                        style={{ width: `${atsScore}%` }}
+                      />
+                    </div>
+                  </div>
 
-            {/* Projects */}
-            <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-slate-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
-              <div className="border-b border-white/5 pb-4 mb-4">
-                <h3 className="text-lg font-bold tracking-tight text-foreground">Projects</h3>
-              </div>
-              <Controller
-                name="projects"
-                control={control}
-                render={({ field }) => (
-                  <EntryForm
-                    type="Project"
-                    entries={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
-              />
-              {errors.projects && (
-                <p className="text-sm text-red-500">
-                  {errors.projects.message}
-                </p>
-              )}
-            </div>
+                  {/* Last Saved/Updated timestamp */}
+                  <div className="space-y-2 border-t border-white/5 pt-4">
+                    <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider block">Last Saved</span>
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Clock className="h-3.5 w-3.5 text-primary/60" />
+                      <span>{lastSavedText}</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <div className="flex justify-end pt-4">
-              <Button type="submit" disabled={isSaving} className="rounded-xl px-8 shadow-md">
-                {isSaving ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving Changes...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" />
-                    Submit & View Resume
-                  </>
-                )}
-              </Button>
+              {/* Optimization Recommendations checklist */}
+              <Card className="border border-white/5 bg-slate-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
+                <CardHeader className="border-b border-white/5 pb-4 bg-slate-950/10 flex flex-row items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary animate-pulse" />
+                  <CardTitle className="text-sm font-bold tracking-tight text-foreground">ATS Tips & Warnings</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <ul className="space-y-3">
+                    {recommendations.map((rec, index) => (
+                      <li key={index} className="flex items-start gap-2.5 text-xs text-muted-foreground leading-relaxed">
+                        <div className="h-1.5 w-1.5 mt-1.5 rounded-full bg-primary flex-shrink-0" />
+                        <span>{rec}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
             </div>
-          </form>
+          </div>
         </TabsContent>
 
         <TabsContent value="preview" className="space-y-4">

@@ -60,9 +60,12 @@ export const resumeSchema = z.object({
   contactInfo: contactSchema,
   summary: z.string().min(1, "Professional summary is required"),
   skills: z.string().min(1, "Skills are required"),
-  experience: z.array(entrySchema),
-  education: z.array(entrySchema),
-  projects: z.array(entrySchema),
+  experience: z.array(entrySchema).optional().default([]),
+  education: z.array(entrySchema).optional().default([]),
+  projects: z.array(entrySchema).optional().default([]),
+  certifications: z.array(entrySchema).optional().default([]),
+  internships: z.array(entrySchema).optional().default([]),
+  achievements: z.array(entrySchema).optional().default([]),
 });
 
 export const coverLetterSchema = z.object({
