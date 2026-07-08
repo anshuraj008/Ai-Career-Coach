@@ -4,6 +4,7 @@ import { db } from "@/lib/prisma";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { revalidatePath } from "next/cache";
+import { checkUser } from "@/lib/checkUser";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-3.1-flash-lite" });
@@ -16,9 +17,13 @@ export async function generateCoverLetter(data) {
   const clerkUser = await currentUser();
   const isPremium = clerkUser?.publicMetadata?.plan === "premium";
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
+
+  if (!user) {
+    user = await checkUser();
+  }
 
   if (!user) throw new Error("User not found");
 
@@ -97,9 +102,13 @@ export async function getCoverLetters() {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
+
+  if (!user) {
+    user = await checkUser();
+  }
 
   if (!user) throw new Error("User not found");
 
@@ -117,9 +126,13 @@ export async function getCoverLetter(id) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
+
+  if (!user) {
+    user = await checkUser();
+  }
 
   if (!user) throw new Error("User not found");
 
@@ -135,9 +148,13 @@ export async function deleteCoverLetter(id) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
+
+  if (!user) {
+    user = await checkUser();
+  }
 
   if (!user) throw new Error("User not found");
 
@@ -157,9 +174,13 @@ export async function updateCoverLetter(id, content) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  const user = await db.user.findUnique({
+  let user = await db.user.findUnique({
     where: { clerkUserId: userId },
   });
+
+  if (!user) {
+    user = await checkUser();
+  }
 
   if (!user) throw new Error("User not found");
 

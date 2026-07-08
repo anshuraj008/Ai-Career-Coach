@@ -6,7 +6,7 @@ const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
   ssr: false,
 });
 const MDEditorMarkdown = dynamic(
-  () => import("@uiw/react-md-editor").then((mod) => mod.Markdown),
+  () => import("@uiw/react-md-editor").then((mod) => ({ default: mod.Markdown || mod.default.Markdown })),
   { ssr: false }
 );
 import { Button } from "@/components/ui/button";

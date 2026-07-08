@@ -29,7 +29,7 @@ const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
   ssr: false,
 });
 const MDEditorMarkdown = dynamic(
-  () => import("@uiw/react-md-editor").then((mod) => mod.Markdown),
+  () => import("@uiw/react-md-editor").then((mod) => ({ default: mod.Markdown || mod.default.Markdown })),
   { ssr: false }
 );
 import { Button } from "@/components/ui/button";
@@ -357,7 +357,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="edit">
+        <div className={activeTab === "edit" ? "space-y-6" : "hidden"}>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
             {/* Left / Main form section columns */}
@@ -699,9 +699,9 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
               </Card>
             </div>
           </div>
-        </TabsContent>
+        </div>
 
-        <TabsContent value="preview" className="space-y-4 animate-fade-in">
+        <div className={`space-y-4 animate-fade-in ${activeTab === "preview" ? "" : "hidden"}`}>
           <div className="flex items-center justify-between gap-4 p-4 border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl shadow-sm">
             <div className="flex items-center gap-2">
               <Button
@@ -788,7 +788,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
               preview={resumeMode}
             />
           </div>
-        </TabsContent>
+        </div>
       </Tabs>
     </div>
   );
