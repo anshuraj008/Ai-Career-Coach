@@ -3,7 +3,7 @@ export function entriesToMarkdown(entries, type) {
   if (!entries?.length) return "";
 
   return (
-    `## ${type}\n\n` +
+    `## ${type}\n\n---\n\n` +
     entries
       .map((entry) => {
         if (type === "Education") {
@@ -16,17 +16,25 @@ export function entriesToMarkdown(entries, type) {
             entry.cgpa ? `CGPA: ${entry.cgpa}` : null,
           ]
             .filter(Boolean)
-            .join(" | ");
+            .join("\n");
 
-          return `### ${entry.title} @ ${entry.organization}\n${educationMeta}\n\n${entry.description}`;
+          return `### ${entry.title} @ ${entry.organization}\n${educationMeta}\n\n${formatResumeBody(entry.description)}`;
         }
 
         const dateRange = entry.current
           ? `${entry.startDate} - Present`
           : `${entry.startDate} - ${entry.endDate}`;
-        return `### ${entry.title} @ ${entry.organization}\n${dateRange}\n\n${entry.description}`;
+        const sectionLabel = type === "Project"
+          ? "Timeline"
+          : type === "Certification"
+            ? "Issued"
+            : type === "Achievement"
+              ? "Date"
+              : "Timeline";
+
+        return `### ${entry.title} @ ${entry.organization}\n${sectionLabel}: ${dateRange}\n\n${formatResumeBody(entry.description)}`;
       })
-      .join("\n\n")
+      .join("\n\n---\n\n")
   );
 }
 
@@ -59,11 +67,11 @@ export function markdownToEntries(markdown) {
     if (!section) continue;
 
     // Check if it's the contact header block
-    if (section.includes('align="center"') || section.includes("📧") || section.includes("📱")) {
-      const emailMatch = section.match(/📧\s*([^\s|]+)/);
-      const mobileMatch = section.match(/📱\s*([^\s|]+)/);
-      const linkedinMatch = section.match(/💼\s*\[LinkedIn\]\(([^)]+)\)/);
-      const twitterMatch = section.match(/🐦\s*\[Twitter\]\(([^)]+)\)/);
+    if (section.startsWith("# ") || section.includes("Email:") || section.includes("LinkedIn:")) {
+      const emailMatch = section.match(/Email:\s*([^\n|]+)/i);
+      const mobileMatch = section.match(/Phone:\s*([^\n|]+)/i);
+      const linkedinMatch = section.match(/LinkedIn:\s*([^\n|]+)/i);
+      const twitterMatch = section.match(/Twitter:\s*([^\n|]+)/i);
 
       if (emailMatch) result.contactInfo.email = emailMatch[1].trim();
       if (mobileMatch) result.contactInfo.mobile = mobileMatch[1].trim();
@@ -132,10 +140,46 @@ function parseMarkdownSection(sectionText) {
                 endDate = endPart;
               }
             }
+          } else if (part.startsWith("Timeline:")) {
+            const durationValue = part.replace("Timeline:", "").trim();
+            if (durationValue.includes(" - ")) {
+              const parts = durationValue.split(" - ");
+              startDate = parts[0].trim();
+              const endPart = parts[1].trim();
+              if (endPart.toLowerCase() === "present") {
+                current = true;
+              } else {
+                endDate = endPart;
+              }
+            }
+          } else if (part.startsWith("Issued:")) {
+            const durationValue = part.replace("Issued:", "").trim();
+            if (durationValue.includes(" - ")) {
+              const parts = durationValue.split(" - ");
+              startDate = parts[0].trim();
+              const endPart = parts[1].trim();
+              if (endPart.toLowerCase() === "present") {
+                current = true;
+              } else {
+                endDate = endPart;
+              }
+            }
           } else if (part.startsWith("CGPA:")) {
             cgpa = part.replace("CGPA:", "").trim();
           }
         });
+      } else if (dateLine.startsWith("Timeline:") || dateLine.startsWith("Issued:") || dateLine.startsWith("Date:")) {
+        const durationValue = dateLine.replace(/^Timeline:|^Issued:|^Date:/i, "").trim();
+        if (durationValue.includes(" - ")) {
+          const parts = durationValue.split(" - ");
+          startDate = parts[0].trim();
+          const endPart = parts[1].trim();
+          if (endPart.toLowerCase() === "present") {
+            current = true;
+          } else {
+            endDate = endPart;
+          }
+        }
       } else if (dateLine.includes(" - ")) {
         const parts = dateLine.split(" - ");
         startDate = parts[0].trim();
@@ -159,6 +203,23 @@ function parseMarkdownSection(sectionText) {
     }
   }
   return entries;
+}
+
+function formatResumeBody(description) {
+  if (!description) return "";
+
+  const lines = String(description)
+    .split(/\n+/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  if (lines.length <= 1) {
+    return lines[0] || "";
+  }
+
+  return lines
+    .map((line) => (line.startsWith("-") || line.startsWith("•") ? line : `- ${line}`))
+    .join("\n");
 }
 
 function extractYear(dateValue) {

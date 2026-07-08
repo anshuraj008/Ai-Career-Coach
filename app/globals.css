@@ -78,6 +78,73 @@ body {
   .gradient-title {
     @apply gradient font-extrabold tracking-tighter text-transparent bg-clip-text pb-2 pr-2;
   }
+
+  .resume-markdown-preview .wmde-markdown {
+    color: #111827;
+    background: #ffffff;
+    font-family: "Times New Roman", Times, serif;
+    line-height: 1.45;
+    font-size: 15px;
+  }
+
+  .resume-markdown-preview .wmde-markdown h1 {
+    margin: 0 0 0.35rem;
+    padding-bottom: 0.4rem;
+    text-align: center;
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border-bottom: 2px solid #111827;
+  }
+
+  .resume-markdown-preview .wmde-markdown h2 {
+    margin: 0.9rem 0 0.6rem;
+    padding-bottom: 0.28rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.92rem;
+    font-weight: 700;
+    border-bottom: 1px solid #111827;
+  }
+
+  .resume-markdown-preview .wmde-markdown h3 {
+    margin: 0.8rem 0 0.25rem;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .resume-markdown-preview .wmde-markdown hr {
+    margin: 1rem 0;
+    border-bottom: 1px solid #d1d5db;
+    background: transparent;
+  }
+
+  .resume-markdown-preview .wmde-markdown p {
+    margin: 0.1rem 0 0.45rem;
+  }
+
+  .resume-markdown-preview .wmde-markdown div[align="center"] {
+    margin: 0.08rem 0;
+    text-align: center;
+    font-size: 0.92rem;
+  }
+
+  .resume-markdown-preview .wmde-markdown div[align="center"] + div[align="center"] {
+    margin-top: 0.05rem;
+  }
+
+  .resume-markdown-preview .wmde-markdown div[align="center"] strong {
+    font-weight: 700;
+  }
+
+  .resume-markdown-preview .wmde-markdown ul,
+  .resume-markdown-preview .wmde-markdown ol {
+    margin: 0.2rem 0 0.65rem 1.15rem;
+  }
+
+  .resume-markdown-preview .wmde-markdown li {
+    margin: 0.15rem 0;
+  }
 }
 
 .hero-image-wrapper {

@@ -119,15 +119,19 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
   const getContactMarkdown = () => {
     const { contactInfo } = formValues;
     const parts = [];
-    if (contactInfo.email) parts.push(`📧 ${contactInfo.email}`);
-    if (contactInfo.mobile) parts.push(`📱 ${contactInfo.mobile}`);
-    if (contactInfo.linkedin)
-      parts.push(`💼 [LinkedIn](${contactInfo.linkedin})`);
-    if (contactInfo.twitter) parts.push(`🐦 [Twitter](${contactInfo.twitter})`);
+    if (contactInfo.email) parts.push(`Email: ${contactInfo.email}`);
+    if (contactInfo.mobile) parts.push(`Phone: ${contactInfo.mobile}`);
+    if (contactInfo.linkedin) parts.push(`LinkedIn: ${contactInfo.linkedin}`);
+    if (contactInfo.twitter) parts.push(`Twitter: ${contactInfo.twitter}`);
 
     const fullName = user?.fullName || "Professional Profile";
+    const contactRows = [];
+    if (parts.length > 0) contactRows.push(parts.slice(0, 2).join(" &nbsp;&nbsp; | &nbsp;&nbsp; "));
+    if (parts.length > 2) contactRows.push(parts.slice(2).join(" &nbsp;&nbsp; | &nbsp;&nbsp; "));
+
     return parts.length > 0
-      ? `## <div align="center">${fullName}</div>\n\n<div align="center">\n\n${parts.join(" | ")}\n\n</div>`
+      ? `# ${fullName}\n\n${contactRows.map((row) => `<div align="center">${row}</div>`).join("\n")}
+\n---`
       : "";
   };
 
@@ -742,9 +746,9 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
           {resumeMode === "preview" ? (
             /* Premium Paper Canvas Mockup */
             <div className="p-4 md:p-8 bg-zinc-950/20 border border-white/5 rounded-3xl flex justify-center shadow-inner overflow-x-auto">
-              <div 
+              <div
+                className="resume-markdown-preview w-full max-w-[800px] min-h-[1050px] bg-white text-black pt-6 pb-10 px-8 md:pt-8 md:pb-12 md:px-14 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate select-text"
                 id="resume-pdf"
-                className="w-full max-w-[800px] min-h-[1050px] bg-white text-black p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate select-text"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <MDEditor.Markdown 
