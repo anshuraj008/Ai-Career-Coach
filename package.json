@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && prisma db push && next build",
+    "build": "prisma generate && prisma db push && next lint --no-cache && next build",
     "start": "next dev --turbopack",
-    "lint": "next lint",
+    "lint": "next lint --no-cache",
     "postinstall": "prisma generate"
   },
   "dependencies": {
