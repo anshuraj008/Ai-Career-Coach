@@ -29,6 +29,80 @@ const formatDisplayDate = (dateString) => {
 
 export function EntryForm({ type, entries, onChange }) {
   const [isAdding, setIsAdding] = useState(false);
+  const isEducation = type === "Education";
+  const isProject = type === "Project";
+  const isCertification = type === "Certification";
+  const isAchievement = type === "Achievement";
+
+  const titleLabel = isEducation
+    ? "Course Name"
+    : isProject
+      ? "Project Name"
+      : isCertification
+        ? "Certification Name"
+        : isAchievement
+          ? "Achievement Title"
+          : "Title / Position";
+
+  const organizationLabel = isEducation
+    ? "College / University Name"
+    : isProject
+      ? "Company / Client / Institution"
+      : isCertification
+        ? "Issuing Organization / Provider"
+        : isAchievement
+          ? "Organization / Platform"
+          : "Organization / Company";
+
+  const startDateLabel = isEducation
+    ? "Duration Start"
+    : isProject
+      ? "Project Start"
+      : isCertification
+        ? "Issued Date"
+        : isAchievement
+          ? "Achievement Date"
+          : "Start Date";
+
+  const endDateLabel = isEducation
+    ? "Passout Year / End Date"
+    : isProject
+      ? "Completion Date"
+      : isCertification
+        ? "Expiry Date"
+        : isAchievement
+          ? "Date / Period"
+          : "End Date";
+
+  const currentLabel = isEducation
+    ? "Currently studying here"
+    : isProject
+      ? "Ongoing project"
+      : isCertification
+        ? "Currently valid"
+        : isAchievement
+          ? "Ongoing recognition"
+          : "Currently working here";
+
+  const descriptionLabel = isEducation
+    ? "Professional Highlights / Notes"
+    : isProject
+      ? "Project Summary / Impact"
+      : isCertification
+        ? "Credential Details"
+        : isAchievement
+          ? "Achievement Details"
+          : "Description";
+
+  const descriptionPlaceholder = isEducation
+    ? "Add academic highlights, relevant coursework, leadership roles, awards, and achievements..."
+    : isProject
+      ? "Summarize the objective, your role, technologies used, and measurable impact..."
+      : isCertification
+        ? "Add the credential focus, issuing body, validity, or any noteworthy distinctions..."
+        : isAchievement
+          ? "Describe the recognition, result, scope, and any measurable outcome..."
+          : `Describe your key achievements, responsibilities, and technologies used...`;
 
   const {
     register,
@@ -44,6 +118,7 @@ export function EntryForm({ type, entries, onChange }) {
       organization: "",
       startDate: "",
       endDate: "",
+      cgpa: "",
       description: "",
       current: false,
     },
@@ -56,6 +131,7 @@ export function EntryForm({ type, entries, onChange }) {
       ...data,
       startDate: formatDisplayDate(data.startDate),
       endDate: data.current ? "" : formatDisplayDate(data.endDate),
+      cgpa: data.cgpa,
     };
 
     onChange([...entries, formattedEntry]);
@@ -116,11 +192,20 @@ export function EntryForm({ type, entries, onChange }) {
                   {item.title} <span className="text-muted-foreground font-normal">at</span> {item.organization}
                 </h4>
               </div>
-              <p className="text-[11px] font-bold text-primary uppercase tracking-wider">
-                {item.current
-                  ? `${item.startDate} - Present`
-                  : `${item.startDate} - ${item.endDate}`}
-              </p>
+              {isEducation ? (
+                <p className="text-[11px] font-bold text-primary uppercase tracking-wider">
+                  {item.current
+                    ? `Duration: ${item.startDate} - Present`
+                    : `Duration: ${item.startDate} - ${item.endDate}`}
+                  {item.cgpa ? ` | CGPA: ${item.cgpa}` : ""}
+                </p>
+              ) : (
+                <p className="text-[11px] font-bold text-primary uppercase tracking-wider">
+                  {item.current
+                    ? `${item.startDate} - Present`
+                    : `${item.startDate} - ${item.endDate}`}
+                </p>
+              )}
               <p className="text-sm text-muted-foreground leading-relaxed whitespace-pre-wrap pt-1">
                 {item.description}
               </p>
@@ -149,9 +234,11 @@ export function EntryForm({ type, entries, onChange }) {
           <CardContent className="space-y-6 pt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Title / Position</label>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {titleLabel}
+                </label>
                 <Input
-                  placeholder="e.g. Software Engineer"
+                  placeholder={isEducation ? "e.g. B.Tech in Computer Science" : "e.g. Software Engineer"}
                   className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("title")}
                   error={errors.title}
@@ -161,9 +248,21 @@ export function EntryForm({ type, entries, onChange }) {
                 )}
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Organization / Company</label>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {organizationLabel}
+                </label>
                 <Input
-                  placeholder="e.g. Google"
+                  placeholder={
+                    isEducation
+                      ? "e.g. Delhi Technological University"
+                      : isProject
+                        ? "e.g. Acme Corp"
+                        : isCertification
+                          ? "e.g. Google"
+                          : isAchievement
+                            ? "e.g. IEEE / Hackathon"
+                            : "e.g. Google"
+                  }
                   className="rounded-xl border-white/5 bg-zinc-950/50"
                   {...register("organization")}
                   error={errors.organization}
@@ -178,7 +277,9 @@ export function EntryForm({ type, entries, onChange }) {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Start Date</label>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {startDateLabel}
+                </label>
                 <Input
                   type="month"
                   className="rounded-xl border-white/5 bg-zinc-950/50"
@@ -192,7 +293,9 @@ export function EntryForm({ type, entries, onChange }) {
                 )}
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">End Date</label>
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {endDateLabel}
+                </label>
                 <Input
                   type="month"
                   className="rounded-xl border-white/5 bg-zinc-950/50"
@@ -222,14 +325,29 @@ export function EntryForm({ type, entries, onChange }) {
                 }}
               />
               <label htmlFor="current" className="text-xs font-semibold text-foreground cursor-pointer select-none">
-                Currently working/studying here
+                {currentLabel}
               </label>
             </div>
 
+            {isEducation && (
+              <div className="space-y-2">
+                <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">CGPA</label>
+                <Input
+                  type="text"
+                  placeholder="e.g. 8.6 / 10"
+                  className="rounded-xl border-white/5 bg-zinc-950/50"
+                  {...register("cgpa")}
+                  error={errors.cgpa}
+                />
+              </div>
+            )}
+
             <div className="space-y-2">
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Description</label>
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                {descriptionLabel}
+              </label>
               <Textarea
-                placeholder={`Describe your key achievements, responsibilities, and technologies used...`}
+                placeholder={descriptionPlaceholder}
                 className="h-32 rounded-xl border-white/5 bg-zinc-950/50 leading-relaxed"
                 {...register("description")}
                 error={errors.description}

@@ -510,7 +510,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <FolderGit className="h-5 w-5 text-primary" />
-                    <h3 className="text-lg font-bold tracking-tight text-foreground">Projects</h3>
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Project Portfolio</h3>
                   </div>
                   <Controller
                     name="projects"
@@ -534,7 +534,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <GraduationCap className="h-5 w-5 text-primary" />
-                    <h3 className="text-lg font-bold tracking-tight text-foreground">Education</h3>
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Education Details</h3>
                   </div>
                   <Controller
                     name="education"
@@ -558,7 +558,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <Award className="h-5 w-5 text-primary" />
-                    <h3 className="text-lg font-bold tracking-tight text-foreground">Certifications</h3>
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Certifications & Credentials</h3>
                   </div>
                   <Controller
                     name="certifications"
@@ -577,7 +577,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
                 <div className="space-y-4 p-6 md:p-8 border border-white/5 rounded-2xl bg-zinc-950/40 backdrop-blur-sm shadow-sm relative overflow-hidden">
                   <div className="flex items-center space-x-2 border-b border-white/5 pb-4 mb-4">
                     <TrendingUp className="h-5 w-5 text-primary" />
-                    <h3 className="text-lg font-bold tracking-tight text-foreground">Achievements</h3>
+                    <h3 className="text-lg font-bold tracking-tight text-foreground">Awards & Achievements</h3>
                   </div>
                   <Controller
                     name="achievements"
@@ -744,7 +744,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
             <div className="p-4 md:p-8 bg-zinc-950/20 border border-white/5 rounded-3xl flex justify-center shadow-inner overflow-x-auto">
               <div 
                 id="resume-pdf"
-                className="w-full max-w-[800px] min-h-[1050px] bg-white text-black p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate max-w-none select-text"
+                className="w-full max-w-[800px] min-h-[1050px] bg-white text-black p-10 md:p-16 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate select-text"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <MDEditor.Markdown 

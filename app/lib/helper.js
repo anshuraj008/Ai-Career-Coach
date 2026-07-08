@@ -6,6 +6,21 @@ export function entriesToMarkdown(entries, type) {
     `## ${type}\n\n` +
     entries
       .map((entry) => {
+        if (type === "Education") {
+          const duration = entry.current
+            ? `${entry.startDate} - Present`
+            : `${entry.startDate} - ${entry.endDate}`;
+          const educationMeta = [
+            `Duration: ${duration}`,
+            !entry.current && entry.endDate ? `Passout Year: ${extractYear(entry.endDate)}` : null,
+            entry.cgpa ? `CGPA: ${entry.cgpa}` : null,
+          ]
+            .filter(Boolean)
+            .join(" | ");
+
+          return `### ${entry.title} @ ${entry.organization}\n${educationMeta}\n\n${entry.description}`;
+        }
+
         const dateRange = entry.current
           ? `${entry.startDate} - Present`
           : `${entry.startDate} - ${entry.endDate}`;
@@ -99,7 +114,29 @@ function parseMarkdownSection(sectionText) {
       let startDate = "";
       let endDate = "";
       let current = false;
-      if (dateLine.includes(" - ")) {
+      let cgpa = "";
+
+      if (dateLine.startsWith("Duration:")) {
+        const metadataParts = dateLine.split("|").map((part) => part.trim());
+
+        metadataParts.forEach((part) => {
+          if (part.startsWith("Duration:")) {
+            const durationValue = part.replace("Duration:", "").trim();
+            if (durationValue.includes(" - ")) {
+              const parts = durationValue.split(" - ");
+              startDate = parts[0].trim();
+              const endPart = parts[1].trim();
+              if (endPart.toLowerCase() === "present") {
+                current = true;
+              } else {
+                endDate = endPart;
+              }
+            }
+          } else if (part.startsWith("CGPA:")) {
+            cgpa = part.replace("CGPA:", "").trim();
+          }
+        });
+      } else if (dateLine.includes(" - ")) {
         const parts = dateLine.split(" - ");
         startDate = parts[0].trim();
         const endPart = parts[1].trim();
@@ -115,10 +152,17 @@ function parseMarkdownSection(sectionText) {
         organization,
         startDate,
         endDate,
+        cgpa,
         current,
         description,
       });
     }
   }
   return entries;
+}
+
+function extractYear(dateValue) {
+  if (!dateValue) return "";
+  const match = String(dateValue).match(/(\d{4})$/);
+  return match ? match[1] : dateValue;
 }
