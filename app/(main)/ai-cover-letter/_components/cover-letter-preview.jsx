@@ -5,6 +5,10 @@ import dynamic from "next/dynamic";
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
   ssr: false,
 });
+const MDEditorMarkdown = dynamic(
+  () => import("@uiw/react-md-editor").then((mod) => mod.Markdown),
+  { ssr: false }
+);
 import { Button } from "@/components/ui/button";
 import {
   Save,
@@ -253,7 +257,7 @@ const CoverLetterPreview = ({ content, id }) => {
             lineHeight: "1.6"
           }}
         >
-          <MDEditor.Markdown source={editorContent} />
+          <MDEditorMarkdown source={editorContent} />
         </div>
       </div>
     </div>
