@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/prisma";
-import { auth } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -12,8 +12,7 @@ export async function generateQuiz(config = {}) {
   if (!userId) throw new Error("Unauthorized");
 
   // Check Clerk subscription plan
-  const clerk = await import("@clerk/nextjs/server");
-  const clerkUser = await clerk.currentUser();
+  const clerkUser = await currentUser();
   const isPremium = clerkUser?.publicMetadata?.plan === "premium";
 
   const user = await db.user.findUnique({

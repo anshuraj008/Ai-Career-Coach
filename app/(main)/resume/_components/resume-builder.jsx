@@ -24,7 +24,10 @@ import {
   Clock,
 } from "lucide-react";
 import { toast } from "sonner";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
+  ssr: false,
+});
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";

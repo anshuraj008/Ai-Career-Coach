@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import MDEditor from "@uiw/react-md-editor";
+import dynamic from "next/dynamic";
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
+  ssr: false,
+});
 import { Button } from "@/components/ui/button";
 import {
   Save,
