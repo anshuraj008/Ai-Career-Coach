@@ -16,9 +16,9 @@ import { generateQuiz, saveQuizResult } from "@/actions/interview";
 import QuizResult from "./quiz-result";
 import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
-import { Sparkles, BrainCircuit, CheckCircle, HelpCircle } from "lucide-react";
+import { Sparkles, BrainCircuit, CheckCircle, HelpCircle, Loader2 } from "lucide-react";
 
-export default function Quiz({ config = {} }) {
+export default function Quiz({ config = {}, onCancel, onComplete }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [showExplanation, setShowExplanation] = useState(false);
@@ -80,6 +80,9 @@ export default function Quiz({ config = {} }) {
     try {
       await saveQuizResultFn(quizData, answers, score);
       toast.success("Quiz completed!");
+      if (onComplete) {
+        onComplete();
+      }
     } catch (error) {
       toast.error(error.message || "Failed to save quiz results");
     }
@@ -95,11 +98,16 @@ export default function Quiz({ config = {} }) {
 
   if (generatingQuiz) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 space-y-4">
+      <div className="flex flex-col items-center justify-center py-20 space-y-6">
         <BarLoader className="mt-4" width={"100%"} color="hsl(var(--primary))" />
-        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider animate-pulse">
+        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider animate-pulse text-center">
           Generating customized questions...
         </p>
+        {onCancel && (
+          <Button variant="ghost" onClick={onCancel} className="text-muted-foreground hover:text-foreground text-xs font-bold border border-white/5 rounded-xl px-4 py-2 hover:bg-white/5 transition-all">
+            Cancel & Go Back
+          </Button>
+        )}
       </div>
     );
   }
@@ -108,7 +116,7 @@ export default function Quiz({ config = {} }) {
   if (resultData) {
     return (
       <div className="mx-2">
-        <QuizResult result={resultData} onStartNew={startNewQuiz} />
+        <QuizResult result={resultData} onStartNew={startNewQuiz} onCancel={onCancel} />
       </div>
     );
   }
@@ -127,10 +135,15 @@ export default function Quiz({ config = {} }) {
             This quiz contains 10 technical questions tailored specific to your registered industry and expertise. Take your time and choose the best answers.
           </p>
         </CardContent>
-        <CardFooter className="bg-zinc-950/20 px-6 py-4 flex justify-center border-t border-white/5">
+        <CardFooter className="bg-zinc-950/20 px-6 py-4 flex flex-col sm:flex-row gap-3 justify-center border-t border-white/5">
           <Button onClick={() => generateQuizFn(config)} className="w-full max-w-sm rounded-xl py-6 font-bold shadow-md hover:scale-105 transition-all">
             Start AI Mock Quiz
           </Button>
+          {onCancel && (
+            <Button variant="ghost" onClick={onCancel} className="w-full max-w-xs text-muted-foreground hover:text-foreground text-xs font-semibold rounded-xl">
+              Back to Setup
+            </Button>
+          )}
         </CardFooter>
       </Card>
     );
@@ -140,8 +153,8 @@ export default function Quiz({ config = {} }) {
 
   return (
     <Card className="mx-2 border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
-      <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10">
-        <div className="flex flex-col space-y-3">
+      <CardHeader className="border-b border-white/5 pb-4 bg-zinc-950/10 flex flex-row items-start justify-between gap-4">
+        <div className="flex flex-col space-y-3 flex-1">
           <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             <span>Question {currentQuestion + 1} of {quizData.length}</span>
             <span>{Math.round(((currentQuestion + 1) / quizData.length) * 100)}% Complete</span>
@@ -154,6 +167,11 @@ export default function Quiz({ config = {} }) {
             />
           </div>
         </div>
+        {onCancel && (
+          <Button variant="ghost" size="sm" onClick={onCancel} className="text-muted-foreground hover:text-foreground text-xs font-bold border border-white/5 rounded-xl px-3 hover:bg-white/5 transition-all">
+            Exit
+          </Button>
+        )}
       </CardHeader>
       <CardContent className="space-y-6 pt-6 px-6 md:px-8">
         <p className="text-lg font-bold tracking-tight text-foreground leading-snug">{question.question}</p>

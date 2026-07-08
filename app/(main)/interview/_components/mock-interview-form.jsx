@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -19,7 +19,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-export default function MockInterviewForm() {
+export default function MockInterviewForm({ selectedCategory, onSubmit }) {
   const router = useRouter();
   const [role, setRole] = useState("Software Engineer");
   const [experienceLevel, setExperienceLevel] = useState("Mid-Level");
@@ -30,21 +30,39 @@ export default function MockInterviewForm() {
   const [camera, setCamera] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (selectedCategory) {
+      setRole(selectedCategory);
+    }
+  }, [selectedCategory]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    const params = new URLSearchParams({
-      role,
-      experienceLevel,
-      difficulty,
-      duration,
-      companyType,
-      mode,
-      camera: camera.toString(),
-    });
-    
-    router.push(`/interview/mock?${params.toString()}`);
+    if (onSubmit) {
+      onSubmit({
+        role,
+        experienceLevel,
+        difficulty,
+        duration,
+        companyType,
+        mode,
+        camera: camera.toString(),
+      });
+      setIsSubmitting(false);
+    } else {
+      const params = new URLSearchParams({
+        role,
+        experienceLevel,
+        difficulty,
+        duration,
+        companyType,
+        mode,
+        camera: camera.toString(),
+      });
+      router.push(`/interview/mock?${params.toString()}`);
+    }
   };
 
   return (
