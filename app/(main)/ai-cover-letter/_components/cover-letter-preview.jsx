@@ -237,7 +237,7 @@ const CoverLetterPreview = ({ content, id }) => {
       {/* Live Markdown Editor Workspace */}
       <div className="border border-white/5 rounded-2xl overflow-hidden shadow-2xl bg-white">
         <MDEditor 
-          value={editorContent} 
+          value={editorContent || ""} 
           onChange={setEditorContent} 
           preview={previewMode} 
           height={700} 
@@ -257,7 +257,7 @@ const CoverLetterPreview = ({ content, id }) => {
             lineHeight: "1.6"
           }}
         >
-          <MDEditorMarkdown source={editorContent} />
+          <MDEditorMarkdown source={editorContent || ""} />
         </div>
       </div>
     </div>

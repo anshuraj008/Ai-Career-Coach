@@ -52,8 +52,10 @@ import { useUser } from "@clerk/nextjs";
 import { entriesToMarkdown, markdownToEntries } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 export default function ResumeBuilder({ initialContent, resumeData }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState("edit");
   const [previewContent, setPreviewContent] = useState(initialContent);
   const { user } = useUser();
@@ -116,6 +118,7 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
   useEffect(() => {
     if (saveResult && !isSaving) {
       toast.success("Resume saved successfully!");
+      router.refresh();
       setActiveTab("preview");
     }
     if (saveError) {
@@ -750,31 +753,41 @@ export default function ResumeBuilder({ initialContent, resumeData }) {
             </div>
           )}
 
-          {resumeMode === "preview" ? (
-            /* Premium Paper Canvas Mockup */
-            <div className="p-4 md:p-8 bg-zinc-950/20 border border-white/5 rounded-3xl flex justify-center shadow-inner overflow-x-auto">
-              <div
-                className="resume-markdown-preview w-full max-w-[800px] min-h-[1050px] bg-white text-black pt-6 pb-10 px-8 md:pt-8 md:pb-12 md:px-14 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate select-text"
-                id="resume-pdf"
-                style={{ fontFamily: "'Inter', sans-serif" }}
-              >
-                <MDEditorMarkdown 
-                  source={previewContent} 
-                  style={{ background: "white", color: "black" }} 
-                />
-              </div>
-            </div>
-          ) : (
-            /* Live Markdown Editor Box */
-            <div className="border border-white/5 rounded-2xl overflow-hidden shadow-2xl bg-white">
-              <MDEditor
-                value={previewContent}
-                onChange={setPreviewContent}
-                height={800}
-                preview={resumeMode}
+          {/* Premium Paper Canvas Mockup */}
+          <div 
+            key="preview-container" 
+            className={`p-4 md:p-8 bg-zinc-950/20 border border-white/5 rounded-3xl flex justify-center shadow-inner overflow-x-auto ${
+              resumeMode === "preview" ? "" : "hidden"
+            }`}
+          >
+            <div
+              className="resume-markdown-preview w-full max-w-[800px] min-h-[1050px] bg-white text-black pt-6 pb-10 px-8 md:pt-8 md:pb-12 md:px-14 shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-sm prose prose-slate select-text"
+              id="resume-pdf"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+              translate="no"
+            >
+              <MDEditorMarkdown 
+                source={previewContent || ""} 
+                style={{ background: "white", color: "black" }} 
               />
             </div>
-          )}
+          </div>
+
+          {/* Live Markdown Editor Box */}
+          <div 
+            key="editor-container" 
+            className={`border border-white/5 rounded-2xl overflow-hidden shadow-2xl bg-white ${
+              resumeMode !== "preview" ? "" : "hidden"
+            }`} 
+            translate="no"
+          >
+            <MDEditor
+              value={previewContent || ""}
+              onChange={setPreviewContent}
+              height={800}
+              preview={resumeMode}
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </div>

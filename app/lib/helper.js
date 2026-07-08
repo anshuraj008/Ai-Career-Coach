@@ -38,6 +38,15 @@ export function entriesToMarkdown(entries, type) {
   );
 }
 
+// Clean HTML tags and &nbsp; entities from contact values
+function cleanContactValue(val) {
+  if (!val) return "";
+  return val
+    .replace(/&nbsp;/gi, "")
+    .replace(/<\/?[^>]+(>|$)/g, "")
+    .trim();
+}
+
 // Parse markdown string back to form values
 export function markdownToEntries(markdown) {
   const result = {
@@ -73,10 +82,10 @@ export function markdownToEntries(markdown) {
       const linkedinMatch = section.match(/LinkedIn:\s*([^\n|]+)/i);
       const twitterMatch = section.match(/Twitter:\s*([^\n|]+)/i);
 
-      if (emailMatch) result.contactInfo.email = emailMatch[1].trim();
-      if (mobileMatch) result.contactInfo.mobile = mobileMatch[1].trim();
-      if (linkedinMatch) result.contactInfo.linkedin = linkedinMatch[1].trim();
-      if (twitterMatch) result.contactInfo.twitter = twitterMatch[1].trim();
+      if (emailMatch) result.contactInfo.email = cleanContactValue(emailMatch[1]);
+      if (mobileMatch) result.contactInfo.mobile = cleanContactValue(mobileMatch[1]);
+      if (linkedinMatch) result.contactInfo.linkedin = cleanContactValue(linkedinMatch[1]);
+      if (twitterMatch) result.contactInfo.twitter = cleanContactValue(twitterMatch[1]);
     } else if (section.startsWith("Professional Summary")) {
       result.summary = section.replace("Professional Summary", "").trim();
     } else if (section.startsWith("Skills")) {
