@@ -59,10 +59,10 @@ import {
 } from "@/components/ui/select";
 import { industries } from "@/data/industries";
 import { onboardingSchema } from "@/app/lib/schema";
-import { updateUser, downgradeToFree } from "@/actions/user";
+import { updateUser } from "@/actions/user";
 import useFetch from "@/hooks/use-fetch";
 import { toast } from "sonner";
-import Link from "next/link";
+
 
 const DashboardView = ({ insights, initialProfile, isPremium }) => {
   const router = useRouter();
@@ -161,30 +161,7 @@ const DashboardView = ({ insights, initialProfile, isPremium }) => {
     }
   }, [updateResult, updateError, isUpdating]);
 
-  const {
-    loading: isDowngrading,
-    fn: downgradeToFreeFn,
-    data: downgradeResult,
-    error: downgradeError,
-  } = useFetch(downgradeToFree);
 
-  const handleDowngrade = async () => {
-    try {
-      await downgradeToFreeFn();
-    } catch (error) {
-      console.error("Downgrade error:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (downgradeResult?.success && !isDowngrading) {
-      toast.success("Downgraded to Free plan.");
-      router.refresh();
-    }
-    if (downgradeError) {
-      toast.error(downgradeError.message || "Failed to downgrade plan");
-    }
-  }, [downgradeResult, downgradeError, isDowngrading]);
 
   // Transform salary data for the chart
   const salaryData = insights.salaryRanges.map((range) => ({
@@ -247,30 +224,7 @@ const DashboardView = ({ insights, initialProfile, isPremium }) => {
             Last updated: {lastUpdatedDate}
           </Badge>
 
-          {isPremium ? (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleDowngrade}
-              disabled={isDowngrading}
-              className="rounded-xl font-bold border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 text-xs shadow-sm h-8"
-            >
-              {isDowngrading ? (
-                <>
-                  <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                  Downgrading...
-                </>
-              ) : (
-                "Downgrade to Free"
-              )}
-            </Button>
-          ) : (
-            <Link href="/checkout">
-              <Button size="sm" className="rounded-xl font-bold shadow-md hover:scale-105 active:scale-95 transition-all text-xs h-8">
-                Upgrade to Premium
-              </Button>
-            </Link>
-          )}
+
 
           {/* Edit Profile Dialog */}
           <Dialog open={open} onOpenChange={setOpen}>

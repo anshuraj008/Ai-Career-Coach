@@ -91,42 +91,11 @@ export async function getUserOnboardingStatus() {
 
 // Upgrade user to Premium plan in Clerk metadata
 export async function upgradeToPremium() {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
-
-  try {
-    const client = await clerkClient();
-    await client.users.updateUserMetadata(userId, {
-      publicMetadata: {
-        plan: "premium",
-      },
-    });
-
-    revalidatePath("/");
-    return { success: true };
-  } catch (error) {
-    console.error("Error upgrading user to premium:", error.message);
-    throw new Error("Failed to upgrade subscription");
-  }
+  return { success: true };
 }
 
 // Downgrade user back to Free plan in Clerk metadata
 export async function downgradeToFree() {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
-
-  try {
-    const client = await clerkClient();
-    await client.users.updateUserMetadata(userId, {
-      publicMetadata: {
-        plan: "free",
-      },
-    });
-
-    revalidatePath("/");
-    return { success: true };
-  } catch (error) {
-    console.error("Error downgrading user to free:", error.message);
-    throw new Error("Failed to downgrade subscription");
-  }
+  return { success: true };
 }
+

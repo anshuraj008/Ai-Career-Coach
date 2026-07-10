@@ -67,7 +67,7 @@ export default function InterviewContainer({
 
   // Check if blocked by free tier limit
   const assessmentsCount = assessments.length;
-  const isBlocked = !isPremium && assessmentsCount >= 2;
+  const isBlocked = false;
 
   const handleCategoryClick = (catName) => {
     setSelectedCategory(catName);
@@ -78,10 +78,6 @@ export default function InterviewContainer({
   };
 
   const handleFormSubmit = (config) => {
-    if (isBlocked) {
-      router.push("/checkout");
-      return;
-    }
     setActiveQuizConfig(config);
   };
 
@@ -180,63 +176,6 @@ export default function InterviewContainer({
               onCancel={handleQuizCancel} 
               onComplete={handleQuizComplete} 
             />
-          ) : isBlocked ? (
-            /* Premium Plan Lock / Upgrade Callout Card */
-            <Card className="border border-purple-500/20 bg-gradient-to-br from-zinc-950 via-purple-950/10 to-zinc-950 rounded-2xl overflow-hidden shadow-2xl p-6 md:p-8 space-y-6 relative">
-              <div className="absolute top-0 right-0 p-4">
-                <Badge className="bg-purple-500/10 border border-purple-500/30 text-purple-400 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                  <Lock className="h-3 w-3" />
-                  Premium Feature
-                </Badge>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="p-3 rounded-2xl bg-purple-500/5 border border-purple-500/10 text-purple-400 w-fit">
-                  <Sparkles className="h-7 w-7 animate-pulse" />
-                </div>
-                <div className="space-y-2">
-                  <CardTitle className="text-2xl font-black text-foreground">
-                    Unlock Unlimited Mock Interviews
-                  </CardTitle>
-                  <CardDescription className="text-sm text-muted-foreground max-w-md">
-                    You have generated <strong>{assessmentsCount} / 2</strong> mock interviews on your Free plan. Upgrade to Premium for infinite sessions and full analytical reviews.
-                  </CardDescription>
-                </div>
-              </div>
-
-              <div className="border-t border-white/5 pt-6 space-y-4">
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest block">
-                  Premium Benefits
-                </span>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <li className="flex items-start gap-2.5 text-xs text-muted-foreground">
-                    <CheckCircle className="h-4 w-4 text-purple-400 flex-shrink-0 mt-0.5" />
-                    <span>Unlimited mock interviews.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5 text-xs text-muted-foreground">
-                    <CheckCircle className="h-4 w-4 text-purple-400 flex-shrink-0 mt-0.5" />
-                    <span>Dynamic, detailed score diagnostics.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5 text-xs text-muted-foreground">
-                    <CheckCircle className="h-4 w-4 text-purple-400 flex-shrink-0 mt-0.5" />
-                    <span>Customizable categories & prompts.</span>
-                  </li>
-                  <li className="flex items-start gap-2.5 text-xs text-muted-foreground">
-                    <CheckCircle className="h-4 w-4 text-purple-400 flex-shrink-0 mt-0.5" />
-                    <span>Real-time expert career advice.</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="pt-4 flex justify-end">
-                <Link href="/checkout" className="w-full sm:w-auto">
-                  <Button className="w-full sm:w-auto bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white rounded-xl px-8 py-5 shadow-lg font-bold flex items-center justify-center gap-2 hover:scale-[1.03] transition-all">
-                    <Sparkles className="h-4 w-4" />
-                    Upgrade to Premium
-                  </Button>
-                </Link>
-              </div>
-            </Card>
           ) : (
             /* Regular AI Mock Setup Form Card */
             <Card className="border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl">
@@ -253,11 +192,6 @@ export default function InterviewContainer({
                       </CardDescription>
                     </div>
                   </div>
-                  {!isPremium && (
-                    <Badge className="bg-zinc-900 border border-white/5 text-muted-foreground text-[10px] px-2.5 py-1">
-                      {assessmentsCount} / 2 Free Mocks
-                    </Badge>
-                  )}
                 </div>
               </CardHeader>
               <CardContent className="pt-6 px-6 md:px-8">

@@ -14,7 +14,7 @@ export default async function InterviewPrepPage() {
   const assessments = await getAssessments();
   const user = await currentUser();
   const userName = user?.firstName || "Professional";
-  const isPremium = user?.publicMetadata?.plan === "premium";
+  const isPremium = true;
 
   // Select a random quote
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];

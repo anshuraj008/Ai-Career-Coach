@@ -197,65 +197,28 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Free Plan */}
-            <Card className="relative border border-white/5 bg-zinc-950/40 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between p-8 group hover:border-white/10 transition-all duration-300">
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-bold tracking-tight text-foreground">Free Tier</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Explore our basic AI career building features.</p>
-                </div>
-                <div className="text-3xl font-extrabold tracking-tight">$0 <span className="text-sm text-muted-foreground font-normal">/ month</span></div>
-                
-                <ul className="space-y-3.5 border-t border-white/5 pt-6">
-                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span>1 Resume Document</span>
-                  </li>
-                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span>2 AI Cover Letters</span>
-                  </li>
-                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span>2 Mock Technical Interviews</span>
-                  </li>
-                  <li className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                    <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span>Basic Industry Analytics</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="pt-8">
-                <Link href="/dashboard" className="w-full block">
-                  <Button variant="outline" className="w-full rounded-xl font-bold border-white/5 bg-zinc-900/50 hover:bg-zinc-900">
-                    Get Started Free
-                  </Button>
-                </Link>
-              </div>
-            </Card>
-
-            {/* Premium Plan */}
+          <div className="max-w-2xl mx-auto">
+            {/* Free Forever Plan */}
             <Card className="relative border border-primary/20 bg-zinc-950/60 backdrop-blur-sm rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between p-8 group hover:border-primary/40 transition-all duration-300">
               <div className="absolute top-4 right-4">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-primary bg-primary/10 border border-primary/20 px-2.5 py-1 rounded-full">
-                  Most Popular
+                  Free Forever
                 </span>
               </div>
               <div className="space-y-6">
                 <div>
                   <h3 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-1.5">
-                    Premium Plan
+                    All-Access Career Suite
                     <Sparkles className="h-4 w-4 text-primary animate-pulse" />
                   </h3>
-                  <p className="text-sm text-muted-foreground mt-1">Unlock complete AI coaching and unlimited tools.</p>
+                  <p className="text-sm text-muted-foreground mt-1">Unlock complete AI coaching and unlimited tools without any cost.</p>
                 </div>
-                <div className="text-3xl font-extrabold tracking-tight text-primary">$19 <span className="text-sm text-muted-foreground font-normal">/ month</span></div>
+                <div className="text-3xl font-extrabold tracking-tight text-primary">$0 <span className="text-sm text-muted-foreground font-normal">/ lifetime</span></div>
 
                 <ul className="space-y-3.5 border-t border-white/5 pt-6">
                   <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span>1 Resume Document (with AI Improve)</span>
+                    <span>Unlimited Resume Documents (with AI Improve)</span>
                   </li>
                   <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
@@ -263,7 +226,7 @@ export default function LandingPage() {
                   </li>
                   <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
-                    <span>Unlimited Mock Interviews</span>
+                    <span>Unlimited Mock Interviews & Quizzes</span>
                   </li>
                   <li className="flex items-center gap-2.5 text-sm text-foreground font-medium">
                     <CheckCircle2 className="h-4 w-4 text-primary flex-shrink-0" />
@@ -276,9 +239,9 @@ export default function LandingPage() {
                 </ul>
               </div>
               <div className="pt-8">
-                <Link href="/checkout" className="w-full block">
+                <Link href="/dashboard" className="w-full block">
                   <Button className="w-full rounded-xl font-bold shadow-lg shadow-primary/10 hover:shadow-primary/20 hover:scale-[1.02] transition-all">
-                    Upgrade Now
+                    Get Started Now
                   </Button>
                 </Link>
               </div>
